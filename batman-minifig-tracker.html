@@ -1,0 +1,1641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Bat-Tracker — Batman Minifig Collection</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --black:#0a0a0c;--dark:#111115;--panel:#17171d;--card:#1c1c24;
+  --border:#2a2a38;--yellow:#f5c400;--ydim:#a88800;
+  --green:#1db954;--gdim:#0d6b30;--text:#e8e8f0;--muted:#6b6b80;--subtle:#2e2e3c;
+  --blue:#3b82f6;--bluedim:#1d4ed8;--purple:#a855f7;--purpledim:#7c3aed;
+  --fd:'Bebas Neue',sans-serif;--fm:'IBM Plex Mono',monospace;--fb:'IBM Plex Sans',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--black);color:var(--text);font-family:var(--fb);min-height:100vh;}
+
+/* ── HEADER ── */
+.hdr{background:var(--dark);border-bottom:1px solid var(--border);padding:0 1.5rem;position:sticky;top:0;z-index:100;}
+.hdr-in{max-width:1400px;margin:0 auto;display:flex;align-items:center;gap:1.5rem;padding:.85rem 0;flex-wrap:wrap;}
+.logo{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.lt{font-family:var(--fd);font-size:26px;letter-spacing:2px;color:var(--yellow);line-height:1;}
+.ls{font-family:var(--fm);font-size:9px;color:var(--muted);letter-spacing:3px;text-transform:uppercase;margin-top:2px;}
+.pw{flex:1;min-width:180px;}
+.pn{display:flex;justify-content:space-between;margin-bottom:5px;}
+.pcount{font-family:var(--fd);font-size:20px;color:var(--yellow);letter-spacing:1px;}
+.ppct{font-family:var(--fm);font-size:11px;color:var(--muted);}
+.pt{height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+.pf{height:100%;background:var(--yellow);border-radius:2px;transition:width .5s cubic-bezier(.4,0,.2,1);}
+
+/* ── CONTROLS ── */
+.ctrl{background:var(--panel);border-bottom:1px solid var(--border);padding:.65rem 1.5rem;position:sticky;top:72px;z-index:99;}
+.ctrl-in{max-width:1400px;margin:0 auto;display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.sw{position:relative;flex:1;min-width:180px;}
+.si{position:absolute;left:9px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:13px;pointer-events:none;}
+input[type=text],input[type=url],input[type=number]{background:var(--card);border:1px solid var(--border);color:var(--text);font-family:var(--fm);font-size:12px;padding:7px 9px;border-radius:4px;outline:none;transition:border-color .2s;width:100%;}
+.sw input[type=text]{padding-left:28px;}
+input[type=text]:focus,input[type=url]:focus,input[type=number]:focus{border-color:var(--ydim);}
+input::placeholder{color:var(--muted);}
+select{background:var(--card);border:1px solid var(--border);color:var(--text);font-family:var(--fm);font-size:11px;padding:7px 9px;border-radius:4px;outline:none;cursor:pointer;width:100%;}
+.btn{background:transparent;border:1px solid var(--border);color:var(--muted);font-family:var(--fm);font-size:10px;padding:7px 12px;border-radius:4px;cursor:pointer;letter-spacing:1px;text-transform:uppercase;transition:all .2s;white-space:nowrap;}
+.btn:hover{border-color:var(--ydim);color:var(--yellow);}
+.btn:disabled{opacity:.35;pointer-events:none;}
+.btn-green{border-color:var(--gdim);color:var(--green);}
+.btn-green:hover{border-color:var(--green);color:var(--green);background:rgba(29,185,84,.08);}
+.btn-blue{border-color:var(--bluedim);color:var(--blue);}
+.btn-blue:hover{border-color:var(--blue);color:var(--blue);background:rgba(59,130,246,.08);}
+.btn-purple{border-color:var(--purpledim);color:var(--purple);}
+.btn-purple:hover{border-color:var(--purple);background:rgba(168,85,247,.08);}
+.btn-red{border-color:#7f1d1d;color:#f87171;}
+.btn-red:hover{border-color:#ef4444;background:rgba(239,68,68,.08);}
+.rc{font-family:var(--fm);font-size:11px;color:var(--muted);margin-left:auto;white-space:nowrap;}
+.tabs{display:flex;gap:4px;flex-shrink:0;}
+.tab{background:transparent;border:1px solid var(--border);color:var(--muted);font-family:var(--fm);font-size:10px;padding:6px 14px;border-radius:4px;cursor:pointer;letter-spacing:1px;text-transform:uppercase;transition:all .2s;}
+.tab:hover{border-color:var(--border);color:var(--text);}
+.tab.active-off{border-color:var(--ydim);color:var(--yellow);background:rgba(245,196,0,.07);}
+.tab.active-cust{border-color:var(--purpledim);color:var(--purple);background:rgba(168,85,247,.07);}
+
+/* ── MAIN ── */
+.main{max-width:1400px;margin:0 auto;padding:1.25rem 1.5rem 5rem;}
+
+/* ── SECTION HEADER ── */
+.sec-hdr{display:flex;align-items:center;gap:12px;margin:1.5rem 0 1rem;padding-bottom:.6rem;border-bottom:1px solid var(--border);}
+.sec-title{font-family:var(--fd);font-size:22px;letter-spacing:2px;}
+.sec-title.yellow{color:var(--yellow);}
+.sec-title.purple{color:var(--purple);}
+.sec-count{font-family:var(--fm);font-size:11px;color:var(--muted);}
+.subsec-hdr{display:flex;align-items:center;gap:10px;margin:1.5rem 0 .75rem;padding-bottom:.4rem;border-bottom:1px solid var(--border);}
+.subsec-title{font-family:var(--fd);font-size:16px;letter-spacing:1.5px;}
+.subsec-title.batman{color:var(--yellow);}
+.subsec-title.brucewyne{color:#c084fc;}
+.subsec-title.heroes{color:#60a5fa;}
+.subsec-title.villains{color:#f87171;}
+.subsec-count{font-family:var(--fm);font-size:10px;color:var(--muted);}
+.sec-actions{margin-left:auto;display:flex;gap:6px;}
+
+/* ── GRID ── */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;}
+
+/* ── CARD ── */
+.card{background:var(--card);border:1px solid var(--border);border-radius:6px;overflow:hidden;transition:border-color .2s,transform .15s;position:relative;}
+.card:hover{border-color:#3a3a50;transform:translateY(-2px);}
+.card.got{border-color:var(--gdim);}
+.card.got:hover{border-color:var(--green);}
+.card.custom{border-color:var(--purpledim);}
+.card.custom.got{border-color:var(--green);}
+
+.ciw{position:relative;background:#12121a;height:170px;display:flex;align-items:center;justify-content:center;overflow:hidden;border-bottom:1px solid var(--border);cursor:pointer;}
+.card.got .ciw{border-color:var(--gdim);}
+.ci{max-height:155px;max-width:88%;object-fit:contain;transition:transform .3s;}
+.card:hover .ci{transform:scale(1.07);}
+.iph{display:none;align-items:center;justify-content:center;opacity:.15;}
+
+.gb{position:absolute;top:7px;right:7px;background:var(--green);color:#000;font-family:var(--fm);font-size:9px;font-weight:500;padding:2px 6px;border-radius:2px;letter-spacing:1px;opacity:0;transition:opacity .2s;}
+.card.got .gb{opacity:1;}
+.custom-badge{position:absolute;top:7px;left:7px;background:var(--purple);color:#fff;font-family:var(--fm);font-size:9px;font-weight:500;padding:2px 6px;border-radius:2px;letter-spacing:1px;}
+
+/* card action buttons overlaid on image */
+.card-actions{position:absolute;bottom:6px;right:6px;display:flex;gap:4px;opacity:0;transition:opacity .2s;}
+.card:hover .card-actions{opacity:1;}
+.ca-btn{background:rgba(10,10,12,.85);border:1px solid var(--border);color:var(--muted);font-family:var(--fm);font-size:9px;padding:3px 7px;border-radius:3px;cursor:pointer;letter-spacing:.5px;transition:all .15s;}
+.ca-btn:hover{color:var(--yellow);border-color:var(--ydim);}
+.ca-btn.del:hover{color:#f87171;border-color:#7f1d1d;}
+
+.cb{padding:10px;}
+.cid{font-family:var(--fm);font-size:9px;color:var(--ydim);letter-spacing:1px;margin-bottom:3px;}
+.cn{font-family:var(--fd);font-size:15px;letter-spacing:.5px;color:var(--text);line-height:1.2;margin-bottom:4px;}
+.card.got .cn{color:var(--green);}
+.cth{font-size:10px;color:var(--muted);font-family:var(--fm);margin-bottom:1px;}
+.cyr{font-family:var(--fm);font-size:10px;color:var(--muted);margin-bottom:7px;}
+.cs{font-size:10px;color:var(--muted);font-family:var(--fm);margin-bottom:8px;display:flex;flex-wrap:wrap;gap:2px;min-height:14px;}
+.sp{display:inline-block;background:var(--subtle);border-radius:2px;padding:1px 5px;font-size:9px;}
+.cf{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);padding-top:8px;}
+.blb{font-family:var(--fm);font-size:9px;color:var(--ydim);text-decoration:none;letter-spacing:1px;text-transform:uppercase;border:1px solid var(--ydim);padding:3px 7px;border-radius:2px;transition:all .2s;white-space:nowrap;}
+.blb:hover{color:var(--yellow);border-color:var(--yellow);background:rgba(245,196,0,.08);}
+.blb.none{opacity:.3;pointer-events:none;}
+.tg{width:26px;height:26px;border-radius:50%;border:1px solid var(--border);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;}
+.tg:hover{border-color:var(--green);background:rgba(29,185,84,.1);}
+.card.got .tg{background:var(--green);border-color:var(--green);}
+.tg svg{width:12px;height:12px;}
+
+.empty{grid-column:1/-1;text-align:center;padding:3rem;color:var(--muted);font-family:var(--fm);font-size:13px;}
+
+/* ── PAGINATION ── */
+.pgc{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:1.5rem;font-family:var(--fm);font-size:11px;color:var(--muted);}
+
+/* ── FOOTER BAR ── */
+.ftr{position:fixed;bottom:0;left:0;right:0;background:var(--dark);border-top:1px solid var(--border);padding:.55rem 1.5rem;display:flex;gap:8px;justify-content:flex-end;align-items:center;z-index:200;}
+.st{font-family:var(--fm);font-size:10px;color:var(--muted);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+/* ── MODAL OVERLAY ── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:500;display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity .2s;}
+.overlay.open{opacity:1;pointer-events:all;}
+.modal{background:var(--panel);border:1px solid var(--border);border-radius:8px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;animation:slideUp .2s ease;}
+@keyframes slideUp{from{transform:translateY(16px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+.modal-hdr{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;border-bottom:1px solid var(--border);}
+.modal-title{font-family:var(--fd);font-size:20px;letter-spacing:1px;color:var(--yellow);}
+.modal-close{background:transparent;border:none;color:var(--muted);font-size:20px;cursor:pointer;padding:2px 6px;line-height:1;}
+.modal-close:hover{color:var(--text);}
+.modal-body{padding:1.25rem;}
+.field{margin-bottom:1rem;}
+.field label{display:block;font-family:var(--fm);font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;}
+.field input,.field select,.field textarea{width:100%;}
+.field textarea{background:var(--card);border:1px solid var(--border);color:var(--text);font-family:var(--fm);font-size:12px;padding:7px 9px;border-radius:4px;outline:none;resize:vertical;min-height:60px;}
+.field textarea:focus{border-color:var(--ydim);}
+.field-hint{font-family:var(--fm);font-size:10px;color:var(--muted);margin-top:4px;}
+.img-preview{width:80px;height:80px;background:#12121a;border:1px solid var(--border);border-radius:4px;display:flex;align-items:center;justify-content:center;margin-top:6px;overflow:hidden;}
+.img-preview img{max-width:100%;max-height:100%;object-fit:contain;}
+.modal-footer{display:flex;gap:8px;justify-content:flex-end;padding:1rem 1.25rem;border-top:1px solid var(--border);}
+
+/* ── CUSTOM IMPORT AREA ── */
+.drop-zone{border:2px dashed var(--border);border-radius:6px;padding:2rem;text-align:center;cursor:pointer;transition:border-color .2s;margin-bottom:1rem;}
+.drop-zone:hover,.drop-zone.drag{border-color:var(--purple);}
+.drop-zone p{font-family:var(--fm);font-size:12px;color:var(--muted);margin-top:.5rem;}
+.drop-zone .dz-icon{font-size:28px;}
+
+/* ── ANIMATIONS ── */
+.card{animation:fu .25s ease both;}
+@keyframes fu{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+/* ── MIGRATION NOTICE ── */
+.migrate-icon{font-size:36px;display:block;margin-bottom:.75rem;text-align:center;}
+.migrate-steps{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:.75rem 1rem;margin:1rem 0;}
+.migrate-steps p{font-family:var(--fm);font-size:11px;color:var(--muted);line-height:1.9;margin:0;}
+.migrate-steps strong{color:var(--text);}
+.migrate-or{text-align:center;font-family:var(--fm);font-size:11px;color:var(--muted);margin:.75rem 0;}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="hdr">
+  <div class="hdr-in">
+    <div class="logo">
+      <img src="data:image/jpeg;base64,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" alt="Batman Logo" style="height:40px;object-fit:contain;"/>
+      <div><div class="lt">Bat-Tracker</div><div class="ls">Minifig Collection</div></div>
+    </div>
+    <div class="pw">
+      <div class="pn"><span class="pcount" id="pc">0 / 0 collected</span><span class="ppct" id="pp">0%</span></div>
+      <div class="pt"><div class="pf" id="pf" style="width:0%"></div></div>
+    </div>
+  </div>
+</header>
+
+<!-- CONTROLS -->
+<div class="ctrl">
+  <div class="ctrl-in">
+    <div class="sw"><span class="si">⌕</span><input type="text" id="q" placeholder="Search name, ID, theme..." oninput="render()"/></div>
+    <select id="fs" onchange="render()">
+      <option value="all">All minifigs</option>
+      <option value="got">Collected</option>
+      <option value="not">Not collected</option>
+    </select>
+    <select id="ft" onchange="render()"><option value="all">All themes</option></select>
+    <select id="so" onchange="render()">
+      <option value="yr">Year ↑</option>
+      <option value="yd">Year ↓</option>
+      <option value="na">Name A–Z</option>
+      <option value="th">Theme</option>
+    </select>
+    <div class="tabs">
+      <button class="tab active-off" id="tab-off" onclick="switchTab('off')">Official</button>
+      <button class="tab" id="tab-cust" onclick="switchTab('cust')">Custom</button>
+    </div>
+    <span class="rc" id="rc"></span>
+  </div>
+</div>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- Official minifigs section -->
+  <div id="section-off">
+    <div class="sec-hdr">
+      <div>
+        <div class="sec-title yellow">Official Minifigs</div>
+        <div class="sec-count" id="off-count"></div>
+      </div>
+      <div class="sec-actions">
+        <button class="btn btn-green" onclick="openAddOfficial()">+ Add Figure</button>
+      </div>
+    </div>
+    <div class="subsec-hdr" id="off-batman-hdr">
+      <span class="subsec-title batman">Batman</span>
+      <span class="subsec-count" id="off-batman-count"></span>
+    </div>
+    <div class="grid" id="grid-batman"></div>
+    <div class="pgc" id="pgc-batman"></div>
+    <div class="subsec-hdr" id="off-brucew-hdr">
+      <span class="subsec-title brucewyne">Bruce Wayne</span>
+      <span class="subsec-count" id="off-brucew-count"></span>
+    </div>
+    <div class="grid" id="grid-brucew"></div>
+    <div class="pgc" id="pgc-brucew"></div>
+    <div class="subsec-hdr" id="off-other-hdr">
+      <span class="subsec-title heroes">Other Heroes &amp; Allies</span>
+      <span class="subsec-count" id="off-other-count"></span>
+    </div>
+    <div class="grid" id="grid-other"></div>
+    <div class="pgc" id="pgc-other"></div>
+    <div class="subsec-hdr" id="off-villains-hdr">
+      <span class="subsec-title villains">Villains</span>
+      <span class="subsec-count" id="off-villains-count"></span>
+    </div>
+    <div class="grid" id="grid-villains"></div>
+    <div class="pgc" id="pgc-villains"></div>
+  </div>
+
+  <!-- Custom figures section -->
+  <div id="section-cust" style="display:none">
+    <div class="sec-hdr">
+      <div>
+        <div class="sec-title purple">Custom Figures</div>
+        <div class="sec-count" id="cust-count"></div>
+      </div>
+      <div class="sec-actions">
+        <button class="btn btn-purple" onclick="openCustomImport()">↑ Import CSV / JSON</button>
+        <button class="btn btn-purple" onclick="openAddCustom()">+ Add Figure</button>
+      </div>
+    </div>
+    <div class="subsec-hdr" id="cust-batman-hdr">
+      <span class="subsec-title batman">Batman</span>
+      <span class="subsec-count" id="cust-batman-count"></span>
+    </div>
+    <div class="grid" id="cust-grid-batman"></div>
+    <div class="subsec-hdr" id="cust-brucew-hdr">
+      <span class="subsec-title brucewyne">Bruce Wayne</span>
+      <span class="subsec-count" id="cust-brucew-count"></span>
+    </div>
+    <div class="grid" id="cust-grid-brucew"></div>
+    <div class="subsec-hdr" id="cust-other-hdr">
+      <span class="subsec-title heroes">Other Heroes &amp; Allies</span>
+      <span class="subsec-count" id="cust-other-count"></span>
+    </div>
+    <div class="grid" id="cust-grid-other"></div>
+    <div class="subsec-hdr" id="cust-villains-hdr">
+      <span class="subsec-title villains">Villains</span>
+      <span class="subsec-count" id="cust-villains-count"></span>
+    </div>
+    <div class="grid" id="cust-grid-villains"></div>
+  </div>
+
+</main>
+
+<!-- FOOTER BAR -->
+<div class="ftr">
+  <span class="st" id="st">Ready</span>
+  <button class="btn btn-red" onclick="confirmReset()" title="Reset all figures to not collected. Does not remove added or edited figures.">↺ Reset Collection</button>
+  <button class="btn" onclick="exportData()">Export JSON</button>
+  <button class="btn" onclick="document.getElementById('imp').click()">Import JSON</button>
+  <input type="file" id="imp" accept=".json" style="display:none" onchange="importData(event)"/>
+</div>
+
+<!-- ── MIGRATION NOTICE MODAL ── -->
+<div class="overlay" id="migrate-overlay" onclick="closeMigrate(event)">
+  <div class="modal" onclick="event.stopPropagation()" style="max-width:480px;">
+    <div class="modal-hdr">
+      <span class="modal-title">Restore Your Collection</span>
+      <button class="modal-close" onclick="closeMigrateModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <span class="migrate-icon">🦇</span>
+      <p style="font-family:var(--fb);font-size:14px;color:var(--text);line-height:1.6;text-align:center;margin-bottom:.75rem;">
+        It looks like this is a fresh install with no saved collection data.
+      </p>
+      <p style="font-family:var(--fm);font-size:11px;color:var(--muted);line-height:1.7;text-align:center;">
+        If you used a previous version of Bat-Tracker, your collection is still stored in your browser — it just needs to be transferred to this file.
+      </p>
+
+      <div class="migrate-steps">
+        <p><strong>Option A — Import a backup file</strong><br/>
+        If you previously used <strong>Export JSON</strong>, click the button below to load your backup.</p>
+      </div>
+      <div style="text-align:center;">
+        <button class="btn btn-yellow" onclick="document.getElementById('migrate-file').click()" style="border-color:var(--yellow);color:var(--yellow);font-size:11px;padding:8px 20px;">
+          ↑ Import Backup JSON
+        </button>
+        <input type="file" id="migrate-file" accept=".json" style="display:none" onchange="migrateImport(event)"/>
+      </div>
+
+      <div class="migrate-or">— or —</div>
+
+      <div class="migrate-steps">
+        <p><strong>Option B — Copy from old file manually</strong><br/>
+        1. Open your <strong>old tracker file</strong> in the same browser<br/>
+        2. Press <strong>F12</strong> → Application → Local Storage<br/>
+        3. Copy the value of the <strong>battrk3</strong> key<br/>
+        4. In this file, open DevTools the same way, paste it under <strong>battrk3</strong>, press Enter, then refresh</p>
+      </div>
+
+      <div class="migrate-or">— or —</div>
+
+      <p style="font-family:var(--fm);font-size:11px;color:var(--muted);text-align:center;">
+        Starting fresh? Just close this and begin tracking.
+      </p>
+    </div>
+    <div class="modal-footer" style="justify-content:space-between;">
+      <button class="btn" onclick="dismissMigrate()" style="font-size:10px;">Don't show again</button>
+      <button class="btn" onclick="closeMigrateModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── EDIT / ADD OFFICIAL MODAL ── -->
+<div class="overlay" id="edit-overlay" onclick="closeEdit(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-hdr">
+      <span class="modal-title" id="edit-title">Edit Minifig</span>
+      <button class="modal-close" onclick="closeEditModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="edit-idx"/>
+      <div class="field"><label>ID</label><input type="text" id="edit-id" placeholder="e.g. sh0016"/></div>
+      <div class="field"><label>Name</label><input type="text" id="edit-name" placeholder="Full descriptive name"/></div>
+      <div class="field"><label>Theme</label><input type="text" id="edit-theme" placeholder="e.g. Super Heroes"/></div>
+      <div class="field"><label>Year</label><input type="number" id="edit-year" placeholder="e.g. 2017" min="1990" max="2030"/></div>
+      <div class="field">
+        <label>Set numbers (comma separated)</label>
+        <input type="text" id="edit-sets" placeholder="e.g. 76001-1, 76012-1"/>
+      </div>
+      <div class="field">
+        <label>Image URL <span style="color:var(--muted);font-size:9px">(leave blank for BrickLink CDN)</span></label>
+        <input type="url" id="edit-img" placeholder="https://..." oninput="previewImg('edit-img','edit-img-prev')"/>
+        <div class="img-preview" id="edit-img-prev"><svg width="32" height="22" viewBox="0 0 60 40"><path d="M30 8C20 8 10 2 0 5c5 5 8 9 8 13-3 0-6 2-8 6 6-2 10-2 14 0 2 4 6 8 16 8s14-4 16-8c4-2 8-2 14 0-2-4-5-6-8-6 0-4 3-8 8-13C50 2 40 8 30 8z" fill="#3a3a50"/></svg></div>
+      </div>
+      <div class="field">
+        <label>BrickLink URL <span style="color:var(--muted);font-size:9px">(leave blank for auto)</span></label>
+        <input type="url" id="edit-bl" placeholder="https://www.bricklink.com/..."/>
+      </div>
+      <div class="field">
+        <label>Section override <span style="color:var(--muted);font-size:9px">(auto-detected if not set)</span></label>
+        <select id="edit-section">
+          <option value="">Auto-detect</option>
+          <option value="batman">Batman</option>
+          <option value="brucew">Bruce Wayne</option>
+          <option value="other">Other Heroes &amp; Allies</option>
+          <option value="villain">Villain</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-red" id="edit-del-btn" onclick="deleteOfficial()" style="margin-right:auto">Delete</button>
+      <button class="btn" onclick="closeEditModal()">Cancel</button>
+      <button class="btn btn-green" onclick="saveEdit()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── ADD OFFICIAL MODAL ── -->
+<div class="overlay" id="add-off-overlay" onclick="closeAddOff(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-hdr">
+      <span class="modal-title">Add Official Figure</span>
+      <button class="modal-close" onclick="closeAddOffModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="field"><label>ID <span style="color:var(--muted);font-size:9px">(optional — auto-generated if blank)</span></label><input type="text" id="addoff-id" placeholder="e.g. sh1200"/><div class="field-hint">Used internally — must be unique</div></div>
+      <div class="field"><label>Name</label><input type="text" id="addoff-name" placeholder="e.g. Batman - New Suit"/></div>
+      <div class="field"><label>Theme</label><input type="text" id="addoff-theme" placeholder="e.g. Super Heroes"/></div>
+      <div class="field"><label>Year</label><input type="number" id="addoff-year" placeholder="e.g. 2025" min="1990" max="2040"/></div>
+      <div class="field"><label>Set numbers (comma separated)</label><input type="text" id="addoff-sets" placeholder="e.g. 76300-1, 76301-1"/></div>
+      <div class="field">
+        <label>Image URL <span style="color:var(--muted);font-size:9px">(leave blank for BrickLink CDN)</span></label>
+        <input type="url" id="addoff-img" placeholder="https://..." oninput="previewImg('addoff-img','addoff-img-prev')"/>
+        <div class="img-preview" id="addoff-img-prev"><svg width="32" height="22" viewBox="0 0 60 40"><path d="M30 8C20 8 10 2 0 5c5 5 8 9 8 13-3 0-6 2-8 6 6-2 10-2 14 0 2 4 6 8 16 8s14-4 16-8c4-2 8-2 14 0-2-4-5-6-8-6 0-4 3-8 8-13C50 2 40 8 30 8z" fill="#3a3a50"/></svg></div>
+      </div>
+      <div class="field"><label>BrickLink URL <span style="color:var(--muted);font-size:9px">(leave blank for auto)</span></label><input type="url" id="addoff-bl" placeholder="https://www.bricklink.com/..."/></div>
+      <div class="field">
+        <label>Section</label>
+        <select id="addoff-section">
+          <option value="">Auto-detect</option>
+          <option value="batman">Batman</option>
+          <option value="brucew">Bruce Wayne</option>
+          <option value="other">Other Heroes &amp; Allies</option>
+          <option value="villain">Villain</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeAddOffModal()">Cancel</button>
+      <button class="btn btn-green" onclick="saveAddOfficial()">Add Figure</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── ADD / EDIT CUSTOM MODAL ── -->
+<div class="overlay" id="cust-overlay" onclick="closeCustom(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-hdr">
+      <span class="modal-title" id="cust-modal-title">Add Custom Figure</span>
+      <button class="modal-close" onclick="closeCustomModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="cust-idx"/>
+
+      <!-- URL FETCH PANEL -->
+      <div class="field" style="background:var(--subtle);border-radius:6px;padding:.75rem;margin-bottom:1.25rem;">
+        <label style="color:var(--purple);">⚡ Auto-fill from URL</label>
+        <div style="display:flex;gap:6px;margin-top:5px;">
+          <input type="url" id="fetch-url" placeholder="Paste BrickLink, Brickset, or any product URL..." style="flex:1;"/>
+          <button class="btn btn-purple" id="fetch-btn" onclick="fetchFromUrl()" style="flex-shrink:0;padding:7px 14px;">Fetch</button>
+        </div>
+        <div id="fetch-status" style="font-family:var(--fm);font-size:10px;color:var(--muted);margin-top:5px;min-height:14px;"></div>
+      </div>
+
+      <div class="field"><label>ID / Reference <span style="color:var(--muted);font-size:9px">(optional — auto-generated if blank)</span></label><input type="text" id="cust-id" placeholder="e.g. custom-001 — leave blank to auto-generate"/><div class="field-hint">Used internally to track collection state</div></div>
+      <div class="field"><label>Name <span style="color:var(--muted);font-size:9px">(optional)</span></label><input type="text" id="cust-name" placeholder="e.g. Batman (1989 Keaton Custom)"/></div>
+      <div class="field"><label>Maker / Artist</label><input type="text" id="cust-maker" placeholder="e.g. Arealight, Kazi, self-made"/></div>
+      <div class="field"><label>Theme / Category</label><input type="text" id="cust-theme" placeholder="e.g. Custom, Fan-Made, 3rd Party"/></div>
+      <div class="field"><label>Year acquired / made</label><input type="number" id="cust-year" placeholder="e.g. 2024" min="1990" max="2030"/></div>
+      <div class="field"><label>Notes</label><textarea id="cust-notes" placeholder="Any notes about this figure..."></textarea></div>
+      <div class="field">
+        <label>Image URL</label>
+        <input type="url" id="cust-img" placeholder="https://..." oninput="previewImg('cust-img','cust-img-prev')"/>
+        <div class="img-preview" id="cust-img-prev"><svg width="32" height="22" viewBox="0 0 60 40"><path d="M30 8C20 8 10 2 0 5c5 5 8 9 8 13-3 0-6 2-8 6 6-2 10-2 14 0 2 4 6 8 16 8s14-4 16-8c4-2 8-2 14 0-2-4-5-6-8-6 0-4 3-8 8-13C50 2 40 8 30 8z" fill="#3a3a50"/></svg></div>
+      </div>
+      <div class="field"><label>Link / Source URL</label><input type="url" id="cust-link" placeholder="https://..."/></div>
+      <div class="field">
+        <label>Section override <span style="color:var(--muted);font-size:9px">(auto-detected if not set)</span></label>
+        <select id="cust-section">
+          <option value="">Auto-detect</option>
+          <option value="batman">Batman</option>
+          <option value="brucew">Bruce Wayne</option>
+          <option value="other">Other Heroes &amp; Allies</option>
+          <option value="villain">Villain</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-red" id="cust-del-btn" onclick="deleteCustom()" style="margin-right:auto;display:none">Delete</button>
+      <button class="btn" onclick="closeCustomModal()">Cancel</button>
+      <button class="btn btn-purple" onclick="saveCustom()">Save Figure</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── CUSTOM IMPORT MODAL ── -->
+<div class="overlay" id="imp-overlay" onclick="closeImpModal(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-hdr">
+      <span class="modal-title">Import Custom Figures</span>
+      <button class="modal-close" onclick="closeImpModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-family:var(--fm);font-size:11px;color:var(--muted);margin-bottom:1rem;line-height:1.7;">
+        Import a <strong style="color:var(--text)">JSON</strong> or <strong style="color:var(--text)">CSV</strong> file containing custom figures.<br/>
+        Existing figures with the same ID will be updated. Others will be added.
+      </p>
+
+      <div class="drop-zone" id="drop-zone" onclick="document.getElementById('cust-file').click()"
+           ondragover="event.preventDefault();this.classList.add('drag')"
+           ondragleave="this.classList.remove('drag')"
+           ondrop="handleDrop(event)">
+        <div class="dz-icon">📂</div>
+        <p>Click to browse or drag & drop a file here</p>
+        <p style="margin-top:.25rem;font-size:10px;">.json or .csv accepted</p>
+      </div>
+      <input type="file" id="cust-file" accept=".json,.csv" style="display:none" onchange="handleCustomFile(event)"/>
+
+      <div style="font-family:var(--fm);font-size:11px;color:var(--muted);line-height:1.8;">
+        <strong style="color:var(--text);display:block;margin-bottom:.4rem;">JSON format:</strong>
+        <code style="display:block;background:var(--card);padding:.6rem .75rem;border-radius:4px;font-size:10px;color:#9ca3af;white-space:pre;">[
+  {
+    "id": "custom-001",
+    "name": "Batman 1989 Keaton",
+    "maker": "Arealight",
+    "theme": "Custom",
+    "year": 2023,
+    "notes": "Pearl dark gray cowl",
+    "image": "https://...",
+    "link": "https://..."
+  }
+]</code>
+        <strong style="color:var(--text);display:block;margin:.75rem 0 .4rem;">CSV format:</strong>
+        <code style="display:block;background:var(--card);padding:.6rem .75rem;border-radius:4px;font-size:10px;color:#9ca3af;">id,name,maker,theme,year,notes,image,link</code>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeImpModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════════
+// DATA — Official minifigs
+// Source: BrickLink catalog + Brickset
+// ════════════════════════════════════════════════════════════════
+const SEED = [
+  // Batman I (2006–2008)
+  {id:"bat001",name:"Batman - Light Bluish Gray Suit, Black Mask",theme:"Batman I",year:2006,sets:["7782-1","7783-1","7786-1"],img:"",bl:""},
+  {id:"bat002",name:"Batman - Black Suit, Black Mask",theme:"Batman I",year:2006,sets:["7779-1","7780-1","7781-1","7884-1"],img:"",bl:""},
+  {id:"bat003",name:"Catwoman - Black Suit, Dark Purple Trim, Red Lips",theme:"Batman I",year:2006,sets:["7779-1","7780-1"],img:"",bl:""},
+  {id:"bat004",name:"Two-Face - Black Stripe Hips",theme:"Batman I",year:2006,sets:["7781-1"],img:"",bl:""},
+  {id:"bat004a",name:"Two-Face - Plain White Hips",theme:"Batman I",year:2006,sets:["7781-1"],img:"",bl:""},
+  {id:"bat005",name:"The Joker - Orange Vest",theme:"Batman I",year:2006,sets:["7782-1"],img:"",bl:""},
+  {id:"bat006",name:"Two-Face's Henchman",theme:"Batman I",year:2006,sets:["7781-1"],img:"",bl:""},
+  {id:"bat007",name:"The Joker's Henchman",theme:"Batman I",year:2006,sets:["7782-1"],img:"",bl:""},
+  {id:"bat008",name:"Killer Croc",theme:"Batman I",year:2006,sets:["7780-1"],img:"",bl:""},
+  {id:"bat009",name:"Robin",theme:"Batman I",year:2006,sets:["7783-1","7884-1"],img:"",bl:""},
+  {id:"bat010",name:"The Penguin - Dark Purple Short Legs",theme:"Batman I",year:2006,sets:["7783-1"],img:"",bl:""},
+  {id:"bat011c01",name:"Mr. Freeze",theme:"Batman I",year:2006,sets:["7783-1"],img:"",bl:""},
+  {id:"bat011i",name:"Mr. Freeze - Blue Outfit",theme:"Batman I",year:2006,sets:["7884-1"],img:"",bl:""},
+  {id:"bat012",name:"Mr. Freeze's Henchman",theme:"Batman I",year:2006,sets:["7783-1"],img:"",bl:""},
+  {id:"bat013",name:"Bruce Wayne - Dark Blue Suit",theme:"Batman I",year:2006,sets:["7783-1"],img:"",bl:""},
+  {id:"bat014",name:"Alfred Pennyworth - Bow Tie",theme:"Batman I",year:2006,sets:["7783-1"],img:"",bl:""},
+  {id:"bat015",name:"Nightwing - Blue Arms and Chest Symbol",theme:"Batman I",year:2006,sets:["7786-1"],img:"",bl:""},
+  {id:"bat016",name:"Scarecrow - Glow in the Dark Head",theme:"Batman I",year:2006,sets:["7786-1"],img:"",bl:""},
+  {id:"bat017",name:"The Riddler - Black Hair",theme:"Batman I",year:2006,sets:["7787-1"],img:"",bl:""},
+  {id:"bat018",name:"Poison Ivy",theme:"Batman I",year:2006,sets:["7785-1"],img:"",bl:""},
+  {id:"bat019",name:"Arkham Asylum Guard - Light Brown Head",theme:"Batman I",year:2006,sets:["7785-1"],img:"",bl:""},
+  {id:"bat020",name:"Arkham Asylum Guard - Light Nougat Head",theme:"Batman I",year:2006,sets:["7785-1"],img:"",bl:""},
+  {id:"bat021",name:"Bane",theme:"Batman I",year:2007,sets:["7787-1"],img:"",bl:""},
+  {id:"bat022",name:"Batman - Light Bluish Gray Suit, Dark Blue Mask",theme:"Batman I",year:2007,sets:["7885-1"],img:"",bl:""},
+  {id:"bat023",name:"The Riddler - Black Hair, Jet Pack",theme:"Batman I",year:2007,sets:["7787-1"],img:"",bl:""},
+  {id:"bat024",name:"Batman - Dark Bluish Gray Suit, Black Mask",theme:"Batman I",year:2008,sets:["7888-1"],img:"",bl:""},
+  {id:"bat025",name:"Robin - Short Hair",theme:"Batman I",year:2008,sets:["7886-1"],img:"",bl:""},
+  {id:"bat026",name:"Harley Quinn - White Hands",theme:"Batman I",year:2008,sets:["7886-1"],img:"",bl:""},
+  // Super Heroes (2011–2025)
+  {id:"sh0002",name:"Batman (Comic-Con 2011 Exclusive)",theme:"Super Heroes",year:2011,sets:["comcon014-1","comcon018-1"],img:"",bl:""},
+  {id:"sh0016",name:"Batman - Black Suit, Yellow Belt (Type 1 Cowl)",theme:"Super Heroes",year:2012,sets:["6860-1","76001-1"],img:"",bl:""},
+  {id:"sh0016a",name:"Batman - Black Suit, Yellow Belt (Type 2 Cowl)",theme:"Super Heroes",year:2012,sets:["6863-1","76012-1"],img:"",bl:""},
+  {id:"sh0016b",name:"Batman - Black Suit, Yellow Belt (Spongy Cape)",theme:"Super Heroes",year:2013,sets:["76009-1"],img:"",bl:""},
+  {id:"sh0026",name:"Bruce Wayne - Sand Blue Suit",theme:"Super Heroes",year:2012,sets:["6860-1"],img:"",bl:""},
+  {id:"sh0046",name:"Batman - Electro Suit",theme:"Super Heroes",year:2012,sets:["6858-1"],img:"",bl:""},
+  {id:"sh0047",name:"Batman - Arctic Suit",theme:"Super Heroes",year:2012,sets:["6861-1"],img:"",bl:""},
+  {id:"sh0048",name:"Batman - Black Wings, White Headband",theme:"Super Heroes",year:2012,sets:["6863-1"],img:"",bl:""},
+  {id:"sh0057",name:"Dr. Harleen Quinzel",theme:"Super Heroes",year:2012,sets:["6857-1"],img:"",bl:""},
+  {id:"sh0089",name:"Batman - Dark Bluish Gray Suit, Gold Belt, DBG Hands",theme:"Super Heroes",year:2013,sets:["76000-1"],img:"",bl:""},
+  {id:"sh0092",name:"Batgirl - Black Suit, Lavender Cape",theme:"Super Heroes",year:2014,sets:["76001-1"],img:"",bl:""},
+  {id:"sh0097",name:"Batman - Dark Blue Wetsuit and Flippers",theme:"Super Heroes",year:2014,sets:["76010-1"],img:"",bl:""},
+  {id:"sh0194",name:"Deathstroke",theme:"Super Heroes",year:2015,sets:["76034-1"],img:"",bl:""},
+  {id:"sh0198",name:"Beast Boy",theme:"Super Heroes",year:2015,sets:["76035-1"],img:"",bl:""},
+  {id:"sh0204",name:"Batman - Dark Bluish Gray Suit, Gold Belt, Black Hands",theme:"Super Heroes",year:2015,sets:["76045-1"],img:"",bl:""},
+  {id:"sh0217",name:"Batman - Dawn of Justice",theme:"Super Heroes",year:2016,sets:["76044-1"],img:"",bl:""},
+  {id:"sh0243",name:"Catwoman - Short Legs (Mighty Micros)",theme:"Super Heroes",year:2016,sets:["76061-1"],img:"",bl:""},
+  {id:"sh0245",name:"Bane - Short Legs (Mighty Micros)",theme:"Super Heroes",year:2016,sets:["76062-1"],img:"",bl:""},
+  {id:"sh0259",name:"Deadshot",theme:"Super Heroes",year:2016,sets:["76053-1"],img:"",bl:""},
+  {id:"sh0265",name:"Batman - Pirate Batman",theme:"Super Heroes",year:2016,sets:["76054-1"],img:"",bl:""},
+  {id:"sh0278",name:"Blue Beetle",theme:"Super Heroes",year:2016,sets:["76054-1"],img:"",bl:""},
+  {id:"sh0279",name:"Batman - Gas Mask Batman",theme:"Super Heroes",year:2016,sets:["76053-1"],img:"",bl:""},
+  {id:"sh0281",name:"Captain Boomerang - Black Outfit",theme:"Super Heroes",year:2016,sets:["76055-1"],img:"",bl:""},
+  {id:"sh0288",name:"Desert Batman",theme:"Super Heroes",year:2016,sets:["76056-1"],img:"",bl:""},
+  {id:"sh0522",name:"Batwoman - Red Cape",theme:"Super Heroes",year:2018,sets:["76116-1"],img:"",bl:""},
+  {id:"sh0528",name:"Batman - Heavy Armor",theme:"Super Heroes",year:2018,sets:["76110-1"],img:"",bl:""},
+  {id:"sh0531",name:"Batman - Medium Nougat Face, Light Bluish Gray Suit",theme:"Super Heroes",year:2018,sets:["76119-1"],img:"",bl:""},
+  {id:"sh0534",name:"Batman - Yellow Lantern Suit",theme:"Super Heroes",year:2018,sets:["76116-1"],img:"",bl:""},
+  {id:"sh0535",name:"Batman - Pearl Dark Gray Armor",theme:"Super Heroes",year:2018,sets:["76112-1"],img:"",bl:""},
+  {id:"sh0557",name:"Aquaman - Yellow Long Hair",theme:"Super Heroes",year:2018,sets:["76116-1"],img:"",bl:""},
+  {id:"sh0589",name:"Batman - Dark Bluish Gray, Gold Outline Belt (Type 3 Cowl)",theme:"Super Heroes",year:2019,sets:["76120-1"],img:"",bl:""},
+  {id:"sh0589a",name:"Batman - Dark Bluish Gray, Gold Outline Belt (Spongy Cape)",theme:"Super Heroes",year:2019,sets:["76139-1"],img:"",bl:""},
+  {id:"sh0591",name:"Commissioner Gordon - Reddish Brown Hair",theme:"Super Heroes",year:2019,sets:["76119-1"],img:"",bl:""},
+  {id:"sh0595",name:"Catwoman - Black Suit, Silver Goggles",theme:"Super Heroes",year:2019,sets:["76122-1"],img:"",bl:""},
+  {id:"sh0596",name:"Bruce Wayne - Black Suit, Dark Red Tie",theme:"Super Heroes",year:2019,sets:["76122-1"],img:"",bl:""},
+  {id:"sh0648",name:"Batman - Black Suit, Yellow Belt (Outstretched Cape)",theme:"Super Heroes",year:2020,sets:["76138-1"],img:"",bl:""},
+  {id:"sh0658",name:"Batgirl - Dark Bluish Gray Suit (Rebirth)",theme:"Super Heroes",year:2020,sets:["76137-1"],img:"",bl:""},
+  {id:"sh0661",name:"Bronze Tiger - Rebirth",theme:"Super Heroes",year:2020,sets:["76137-1"],img:"",bl:""},
+  {id:"sh0663",name:"Batman - 4 Arms Backpack",theme:"Super Heroes",year:2020,sets:["76137-1"],img:"",bl:""},
+  {id:"sh0809",name:"Batman - Brick Built Wings",theme:"Super Heroes",year:2022,sets:["76239-1"],img:"",bl:""},
+  {id:"sh0902",name:"Batman - Black Suit, Lopsided Grin",theme:"Super Heroes",year:2023,sets:["76259-1"],img:"",bl:""},
+  {id:"sh0956",name:"Batman - Jet Pack with Flames",theme:"Super Heroes",year:2023,sets:["76301-1"],img:"",bl:""},
+  {id:"sh0964",name:"Batman - Black Suit, White Eyes, Neutral/Angry",theme:"Super Heroes",year:2023,sets:["76270-1"],img:"",bl:""},
+  {id:"sh0965",name:"Batgirl - Light Bluish Gray Suit",theme:"Super Heroes",year:2023,sets:["76270-1"],img:"",bl:""},
+  {id:"sh0988",name:"Batman - Black Suit, White Eyes, Flexible Cape",theme:"Super Heroes",year:2024,sets:["76285-1"],img:"",bl:""},
+  {id:"sh1005",name:"Batman - Black Suit, Yellow Belt, Medium Nougat Details",theme:"Super Heroes",year:2024,sets:["76288-1"],img:"",bl:""},
+  {id:"sh1083",name:"Batwoman - Cape Black and Red Sides",theme:"Super Heroes",year:2024,sets:["76292-1"],img:"",bl:""},
+  {id:"sh1084",name:"Bane - Prison Jumpsuit, Backpack",theme:"Super Heroes",year:2024,sets:["76292-1"],img:"",bl:""},
+  {id:"sh1088",name:"Batwing (without Sticker)",theme:"Super Heroes",year:2024,sets:["76296-1"],img:"",bl:""},
+  {id:"sh1088s",name:"Batwing (with Sticker)",theme:"Super Heroes",year:2024,sets:["76296-1"],img:"",bl:""},
+  {id:"sh1089",name:"Catwoman - Black Suit, Red Lenses, Leg Straps",theme:"Super Heroes",year:2024,sets:["76292-1"],img:"",bl:""},
+  {id:"sh1114",name:"Bruce Wayne - Black Suit, Dark Blue Tie",theme:"Super Heroes",year:2024,sets:["76301-1"],img:"",bl:""},
+  {id:"sh1123",name:"Batman - Black Suit, Yellow Belt, Flexible Rubber Cape",theme:"Super Heroes",year:2025,sets:["76320-1"],img:"",bl:""},
+  // Dimensions
+  {id:"dim002",name:"Batman - Dark Bluish Gray Suit, Gold Belt (Dimensions)",theme:"Dimensions",year:2015,sets:["71200-1"],img:"",bl:""},
+  {id:"dim022",name:"Bane - Light Nougat Hands, Backpack (Dimensions)",theme:"Dimensions",year:2016,sets:["71240-1"],img:"",bl:""},
+  // The LEGO Batman Movie sets
+  {id:"sh0339",name:"Batman - Classic Batsuit, Yellow Belt",theme:"The LEGO Batman Movie",year:2017,sets:["70911-1","70912-1","70914-1"],img:"",bl:""},
+  {id:"sh0340",name:"Batman - Lobster Suit",theme:"The LEGO Batman Movie",year:2017,sets:["70907-1"],img:"",bl:""},
+  {id:"sh0341",name:"Batman - Glam Metal Suit",theme:"The LEGO Batman Movie",year:2017,sets:["70908-1"],img:"",bl:""},
+  {id:"sh0342",name:"Batman - Vacation / Robe",theme:"The LEGO Batman Movie",year:2017,sets:["70908-1"],img:"",bl:""},
+  {id:"sh0343",name:"Batman - Fairy Suit",theme:"The LEGO Batman Movie",year:2017,sets:["70909-1"],img:"",bl:""},
+  {id:"sh0344",name:"Batman - Pink Power Suit",theme:"The LEGO Batman Movie",year:2017,sets:["70903-1"],img:"",bl:""},
+  {id:"sh0345",name:"Batman - Scuba Suit",theme:"The LEGO Batman Movie",year:2017,sets:["70909-1"],img:"",bl:""},
+  {id:"sh0346",name:"Batman - Space Suit",theme:"The LEGO Batman Movie",year:2017,sets:["70901-1"],img:"",bl:""},
+  {id:"sh0347",name:"Batman - Bat-Merch Suit",theme:"The LEGO Batman Movie",year:2017,sets:["70902-1"],img:"",bl:""},
+  {id:"sh0348",name:"Batman - Raging Batsuit (Fire)",theme:"The LEGO Batman Movie",year:2017,sets:["70914-1"],img:"",bl:""},
+  {id:"sh0349",name:"Batman - Knightsaber Suit",theme:"The LEGO Batman Movie",year:2017,sets:["70904-1"],img:"",bl:""},
+  {id:"sh0350",name:"Batman - Clan of the Cave Suit",theme:"The LEGO Batman Movie",year:2017,sets:["70913-1"],img:"",bl:""},
+  {id:"sh0351",name:"Batman - Armor Suit",theme:"The LEGO Batman Movie",year:2017,sets:["70905-1"],img:"",bl:""},
+  {id:"sh0530",name:"Batman - Merman Suit",theme:"The LEGO Batman Movie",year:2018,sets:["70909-1"],img:"",bl:""},
+  {id:"sh0531b",name:"Batman - Beach / Swim Shorts",theme:"The LEGO Batman Movie",year:2018,sets:["70906-1"],img:"",bl:""},
+  {id:"sh0532",name:"Batman - Volleyball Suit",theme:"The LEGO Batman Movie",year:2018,sets:["70917-1"],img:"",bl:""},
+  // Collectible Minifigures Series 1 (71017)
+  {id:"coltlbm01",name:"Batman - Lobster Dinner Suit",theme:"Collectible Minifigures",year:2017,sets:["71017-4"],img:"",bl:""},
+  {id:"coltlbm02",name:"Batman - Fairy Suit",theme:"Collectible Minifigures",year:2017,sets:["71017-3"],img:"",bl:""},
+  {id:"coltlbm03",name:"Batman - Glam Metal Suit",theme:"Collectible Minifigures",year:2017,sets:["71017-1"],img:"",bl:""},
+  {id:"coltlbm04",name:"Batman - Caveman Suit",theme:"Collectible Minifigures",year:2017,sets:["71017-2"],img:"",bl:""},
+  {id:"coltlbm05",name:"Batman - Vacation / Hawaiian Shirt",theme:"Collectible Minifigures",year:2017,sets:["71017-5"],img:"",bl:""},
+  {id:"coltlbm06",name:"Batman - Ballet / Pink Tutu Suit",theme:"Collectible Minifigures",year:2017,sets:["71017-6"],img:"",bl:""},
+  {id:"coltlbm07",name:"Batman - Prehistoric Suit",theme:"Collectible Minifigures",year:2017,sets:["71017-7"],img:"",bl:""},
+  {id:"coltlbm08",name:"The Joker",theme:"Collectible Minifigures",year:2017,sets:["71017-8"],img:"",bl:""},
+  {id:"coltlbm09",name:"Batgirl",theme:"Collectible Minifigures",year:2017,sets:["71017-9"],img:"",bl:""},
+  {id:"coltlbm10",name:"Dick Grayson / Robin",theme:"Collectible Minifigures",year:2017,sets:["71017-10"],img:"",bl:""},
+  {id:"coltlbm11",name:"Barbara Gordon",theme:"Collectible Minifigures",year:2017,sets:["71017-11"],img:"",bl:""},
+  {id:"coltlbm12",name:"Commissioner Gordon",theme:"Collectible Minifigures",year:2017,sets:["71017-12"],img:"",bl:""},
+  {id:"coltlbm13",name:"Harley Quinn",theme:"Collectible Minifigures",year:2017,sets:["71017-13"],img:"",bl:""},
+  {id:"coltlbm14",name:"King Tut",theme:"Collectible Minifigures",year:2017,sets:["71017-14"],img:"",bl:""},
+  {id:"coltlbm15",name:"March Harriet",theme:"Collectible Minifigures",year:2017,sets:["71017-15"],img:"",bl:""},
+  {id:"coltlbm16",name:"Mime",theme:"Collectible Minifigures",year:2017,sets:["71017-16"],img:"",bl:""},
+  {id:"coltlbm17",name:"Orca",theme:"Collectible Minifigures",year:2017,sets:["71017-17"],img:"",bl:""},
+  {id:"coltlbm18",name:"Red Hood",theme:"Collectible Minifigures",year:2017,sets:["71017-18"],img:"",bl:""},
+  {id:"coltlbm19",name:"Zodiac Master",theme:"Collectible Minifigures",year:2017,sets:["71017-19"],img:"",bl:""},
+  {id:"coltlbm20",name:"Calculator",theme:"Collectible Minifigures",year:2017,sets:["71017-20"],img:"",bl:""},
+  // Collectible Minifigures Series 2 (71020)
+  {id:"coltlbm21",name:"Batman - Eraser Suit",theme:"Collectible Minifigures",year:2018,sets:["71020-1"],img:"",bl:""},
+  {id:"coltlbm22",name:"Batman - Catman Suit",theme:"Collectible Minifigures",year:2018,sets:["71020-2"],img:"",bl:""},
+  {id:"coltlbm23",name:"Batman - Merman Suit",theme:"Collectible Minifigures",year:2018,sets:["71020-3"],img:"",bl:""},
+  {id:"coltlbm24",name:"Batman - Beach Batman",theme:"Collectible Minifigures",year:2018,sets:["71020-4"],img:"",bl:""},
+  {id:"coltlbm25",name:"Robin - Beach Robin",theme:"Collectible Minifigures",year:2018,sets:["71020-5"],img:"",bl:""},
+  {id:"coltlbm26",name:"Batgirl - Beach Batgirl",theme:"Collectible Minifigures",year:2018,sets:["71020-6"],img:"",bl:""},
+  {id:"coltlbm27",name:"Alfred Pennyworth - Beach Alfred",theme:"Collectible Minifigures",year:2018,sets:["71020-7"],img:"",bl:""},
+  {id:"coltlbm28",name:"The Joker - Ice Cream Suit",theme:"Collectible Minifigures",year:2018,sets:["71020-8"],img:"",bl:""},
+  {id:"coltlbm29",name:"Alfred Pennyworth - Tuxedo",theme:"Collectible Minifigures",year:2018,sets:["71020-9"],img:"",bl:""},
+  {id:"coltlbm30",name:"Clock King",theme:"Collectible Minifigures",year:2018,sets:["71020-10"],img:"",bl:""},
+  {id:"coltlbm31",name:"Hugo Strange",theme:"Collectible Minifigures",year:2018,sets:["71020-11"],img:"",bl:""},
+  {id:"coltlbm32",name:"Catman",theme:"Collectible Minifigures",year:2018,sets:["71020-12"],img:"",bl:""},
+  {id:"coltlbm33",name:"Eraser",theme:"Collectible Minifigures",year:2018,sets:["71020-13"],img:"",bl:""},
+  {id:"coltlbm34",name:"Nurse Harley Quinn",theme:"Collectible Minifigures",year:2018,sets:["71020-14"],img:"",bl:""},
+  {id:"coltlbm35",name:"Vacation Joker",theme:"Collectible Minifigures",year:2018,sets:["71020-15"],img:"",bl:""},
+  {id:"coltlbm36",name:"Excalibur Batman",theme:"Collectible Minifigures",year:2018,sets:["71020-16"],img:"",bl:""},
+  {id:"coltlbm37",name:"Disco Batman",theme:"Collectible Minifigures",year:2018,sets:["71020-17"],img:"",bl:""},
+  {id:"coltlbm38",name:"Tears of Batman",theme:"Collectible Minifigures",year:2018,sets:["71020-18"],img:"",bl:""},
+  {id:"coltlbm39",name:"Superman - Pyjamas",theme:"Collectible Minifigures",year:2018,sets:["71020-19"],img:"",bl:""},
+  {id:"coltlbm40",name:"Fairy Batman (Series 2)",theme:"Collectible Minifigures",year:2018,sets:["71020-20"],img:"",bl:""},
+  // DC Super Heroes CMF
+  {id:"colsh10",name:"Batman - DC Super Heroes Series",theme:"Collectible Minifigures",year:2020,sets:["71026-10"],img:"",bl:""},
+  // Super Heroes — added from BrickLink
+  {id:"sh0006",name:"Catwoman - Black Suit with Dark Purple Trim, Dark Purple Lips",theme:"Super Heroes",year:2012,sets:["6858-1"],img:"",bl:""},
+  {id:"sh0007",name:"Two-Face - Orange and Purple Suit",theme:"Super Heroes",year:2012,sets:["6864-1"],img:"",bl:""},
+  {id:"sh0009",name:"Bane - Light Nougat Hands",theme:"Super Heroes",year:2012,sets:["6864-1"],img:"",bl:""},
+  {id:"sh0010",name:"Poison Ivy - Lime Outfit, Light Nougat Arms",theme:"Super Heroes",year:2012,sets:["6860-1"],img:"",bl:""},
+  {id:"sh0011",name:"Robin - Black Cape",theme:"Super Heroes",year:2012,sets:["6857-1"],img:"",bl:""},
+  {id:"sh0021",name:"Two-Face's Henchman - Orange and Purple, Beard",theme:"Super Heroes",year:2012,sets:["6864-1"],img:"",bl:""},
+  {id:"sh0022",name:"Two-Face's Henchman - Orange and Purple, Sunglasses",theme:"Super Heroes",year:2012,sets:["6864-1"],img:"",bl:""},
+  {id:"sh0023",name:"Guard",theme:"Super Heroes",year:2012,sets:["6860-1"],img:"",bl:""},
+  {id:"sh0024",name:"Harley Quinn - Black and Red Hands",theme:"Super Heroes",year:2012,sets:["6857-1"],img:"",bl:""},
+  {id:"sh0050",name:"Aquaman - Yellow Tousled Hair",theme:"Super Heroes",year:2012,sets:["6862-1"],img:"",bl:""},
+  {id:"sh0058",name:"Scarecrow - Dark Brown Wizard Hat",theme:"Super Heroes",year:2012,sets:["6858-1"],img:"",bl:""},
+  {id:"sh0059",name:"Robin - Black Cape and Hood",theme:"Super Heroes",year:2013,sets:["76011-1"],img:"",bl:""},
+  {id:"sh0091",name:"Robin - Green Hands",theme:"Super Heroes",year:2014,sets:["76013-1"],img:"",bl:""},
+  {id:"sh0112",name:"Robin - Very Short Cape",theme:"Super Heroes",year:2014,sets:["76012-1"],img:"",bl:""},
+  {id:"sh0112a",name:"Robin - Very Short Cape (Variant)",theme:"Super Heroes",year:2014,sets:["76012-1"],img:"",bl:""},
+  {id:"sh0195",name:"Robin - Dark Green Legs",theme:"Super Heroes",year:2015,sets:["76035-1"],img:"",bl:""},
+  {id:"sh0200",name:"Robin - Molded Short Sleeves, Spiked Hair",theme:"Super Heroes",year:2015,sets:["76034-1"],img:"",bl:""},
+  {id:"sh0260",name:"Harley Quinn - Blue and Red Hands and Pigtails",theme:"Super Heroes",year:2016,sets:["76035-1"],img:"",bl:""},
+  {id:"sh0275",name:"Scarecrow - Dark Orange Floppy Hat",theme:"Super Heroes",year:2016,sets:["76054-1"],img:"",bl:""},
+  {id:"sh0277",name:"Farmer",theme:"Super Heroes",year:2016,sets:["76054-1"],img:"",bl:""},
+  {id:"sh0282",name:"Red Hood",theme:"Super Heroes",year:2016,sets:["76055-1"],img:"",bl:""},
+  {id:"sh0289",name:"Robin - Green Hands and Hood",theme:"Super Heroes",year:2016,sets:["76056-1"],img:"",bl:""},
+  {id:"sh0290",name:"Ra's Al Ghul",theme:"Super Heroes",year:2016,sets:["76056-1"],img:"",bl:""},
+  {id:"sh0514",name:"Robin - Red Mask, Juniors Cape",theme:"Super Heroes",year:2017,sets:["76093-1"],img:"",bl:""},
+  {id:"sh0551",name:"Firefly - Trans-Clear Neck Bracket",theme:"Super Heroes",year:2018,sets:["76054-1"],img:"",bl:""},
+  {id:"sh0588",name:"Robin - Green Mask and Hands, Black Short Legs, Yellow Scalloped Cape",theme:"Super Heroes",year:2019,sets:["76120-1"],img:"",bl:""},
+  {id:"sh0590",name:"The Joker - Pinstripe Suit, Dark Green Hair",theme:"Super Heroes",year:2019,sets:["76119-1"],img:"",bl:""},
+  {id:"sh0593",name:"The Penguin - Black Suit, Top Hat, Monocle",theme:"Super Heroes",year:2019,sets:["76119-1"],img:"",bl:""},
+  {id:"sh0594",name:"Two-Face - Black Shirt, Red Tie and Jacket",theme:"Super Heroes",year:2019,sets:["76122-1"],img:"",bl:""},
+  {id:"sh0600",name:"Prison Guard",theme:"Super Heroes",year:2019,sets:["76122-1"],img:"",bl:""},
+  {id:"sh0604",name:"Zebra Batman (Comic-Con 2019 Exclusive)",theme:"Super Heroes",year:2019,sets:["comcon059-1"],img:"",bl:""},
+  {id:"sh0651",name:"Robin - Green Mask and Hands, Black Medium Legs, Yellow Scalloped Cape",theme:"Super Heroes",year:2020,sets:["76138-1"],img:"",bl:""},
+  {id:"sh0822",name:"Robin - Neck Bracket",theme:"Super Heroes",year:2022,sets:["76239-1"],img:"",bl:""},
+  {id:"sh1071",name:"Batman - Dark Bluish Gray Suit, Jet Pack",theme:"Super Heroes",year:2024,sets:["76290-1"],img:"",bl:""},
+  {id:"sh1076",name:"Security Guard Arkham Asylum - Male, Dark Blue Cap, Black Vest",theme:"Super Heroes",year:2024,sets:["76292-1"],img:"",bl:""},
+  {id:"sh1079",name:"Robin - Green Mask, Red Hands, Black Medium Legs, Scalloped Asymmetrical Cape",theme:"Super Heroes",year:2024,sets:["76288-1"],img:"",bl:""},
+  {id:"sh1085",name:"Scarecrow - No Hat, Prison Jumpsuit, Side Pockets",theme:"Super Heroes",year:2024,sets:["76292-1"],img:"",bl:""},
+  {id:"sh1086",name:"Poison Ivy - Lime Outfit, Yellowish Green Arms, Flower",theme:"Super Heroes",year:2024,sets:["76292-1"],img:"",bl:""},
+  {id:"sh1087",name:"Security Guard Arkham Asylum - Female, Dark Blue Cap, Black Vest",theme:"Super Heroes",year:2024,sets:["76292-1"],img:"",bl:""},
+  {id:"sh1119",name:"Batman - Black Suit, Jet Pack, New Cowl",theme:"Super Heroes",year:2025,sets:["76320-1"],img:"",bl:""},
+  {id:"sh1122",name:"The Joker - Purple Suit, Lime Bow Tie",theme:"Super Heroes",year:2025,sets:["76320-1"],img:"",bl:""},
+  // Batman The Animated Series — added from BrickLink
+  {id:"sh0958",name:"Batman - Dark Bluish Gray Suit, Dark Blue and Black Cape",theme:"Batman The Animated Series",year:2023,sets:["76258-1"],img:"",bl:""},
+  {id:"sh0959",name:"Harley Quinn - Jester's Cap, Black and Red Hands, Rounded Collar",theme:"Batman The Animated Series",year:2023,sets:["76258-1"],img:"",bl:""},
+  {id:"sh0960",name:"The Joker - Medium Lavender Suit, Bright Light Orange Vest, Dark Green Hair",theme:"Batman The Animated Series",year:2023,sets:["76258-1"],img:"",bl:""},
+  {id:"sh0961",name:"Catwoman - Light Bluish Gray Suit",theme:"Batman The Animated Series",year:2023,sets:["76258-1"],img:"",bl:""},
+  {id:"sh0962",name:"Batman - Dark Bluish Gray Suit, Flexible Rubber Cape",theme:"Batman The Animated Series",year:2023,sets:["76259-1"],img:"",bl:""},
+  {id:"sh0963",name:"Mr. Freeze - Flat Silver and Black Outfit",theme:"Batman The Animated Series",year:2023,sets:["76259-1"],img:"",bl:""},
+  // Batman Classic TV Series — added from BrickLink
+  {id:"sh0233",name:"Batman - Classic TV Series, Headband and Sand Blue Torso",theme:"Batman Classic TV Series",year:2016,sets:["76052-1"],img:"",bl:""},
+  {id:"sh0234",name:"Robin - Classic TV Series",theme:"Batman Classic TV Series",year:2016,sets:["76052-1"],img:"",bl:""},
+  {id:"sh0235",name:"Bruce Wayne - Ascot and Button Down Shirt",theme:"Batman Classic TV Series",year:2016,sets:["76052-1"],img:"",bl:""},
+  {id:"sh0236",name:"Dick Grayson - Classic TV Series",theme:"Batman Classic TV Series",year:2016,sets:["76052-1"],img:"",bl:""},
+  {id:"sh0237",name:"Alfred Pennyworth - White Hair",theme:"Batman Classic TV Series",year:2016,sets:["76052-1"],img:"",bl:""},
+  {id:"sh0238",name:"The Joker - Dark Pink Suit, Wide Grin / Lips Pursed",theme:"Batman Classic TV Series",year:2016,sets:["76052-1"],img:"",bl:""},
+  {id:"sh0239",name:"The Penguin - Classic TV Series",theme:"Batman Classic TV Series",year:2016,sets:["76052-1"],img:"",bl:""},
+  {id:"sh0240",name:"The Riddler - Classic TV Series",theme:"Batman Classic TV Series",year:2016,sets:["76052-1"],img:"",bl:""},
+  {id:"sh0241",name:"Catwoman - Classic TV Series",theme:"Batman Classic TV Series",year:2016,sets:["76052-1"],img:"",bl:""},
+  {id:"sh0266",name:"Mr. Freeze - Classic TV Series",theme:"Batman Classic TV Series",year:2016,sets:["76052-1"],img:"",bl:""},
+  {id:"sh0703",name:"Batman - Classic TV Series, Goggles and Light Bluish Gray Torso",theme:"Batman Classic TV Series",year:2020,sets:["76188-1"],img:"",bl:""},
+  {id:"sh0704",name:"The Joker - Dark Pink Suit, Open Mouth Grin / Closed Mouth",theme:"Batman Classic TV Series",year:2020,sets:["76188-1"],img:"",bl:""},
+  {id:"sh0986",name:"Batman - Classic TV Series, Goggles, Light Bluish Gray Torso, Flexible Rubber Cape",theme:"Batman Classic TV Series",year:2024,sets:["76286-1"],img:"",bl:""},
+  // Dimensions — added from BrickLink
+  {id:"dim017",name:"The Joker - Medium Azure Vest, Lime Bow Tie, Large Smile",theme:"Dimensions",year:2016,sets:["71229-1"],img:"",bl:""},
+  // Collectible Minifigures — added from BrickLink
+  {id:"coltlbm43",name:"Black Canary",theme:"Collectible Minifigures",year:2018,sets:["71020-4"],img:"",bl:""},
+  {id:"coltlbm44",name:"Black Vulcan",theme:"Collectible Minifigures",year:2018,sets:["71020-5"],img:"",bl:""},
+  // The LEGO Movie
+  {id:"tlm004",name:"Batman - LEGO Movie Suit",theme:"The LEGO Movie",year:2014,sets:["70806-1","70816-1"],img:"",bl:""},
+  // The LEGO Movie 2
+  {id:"tlm118",name:"Batman - LEGO Movie 2",theme:"The LEGO Movie 2",year:2019,sets:["70836-1"],img:"",bl:""},
+  {id:"tlm130",name:"Batman - LEGO Movie 2 (Vest)",theme:"The LEGO Movie 2",year:2019,sets:["70840-1"],img:"",bl:""},
+  {id:"tlm192",name:"Batman - LEGO Movie 2 General",theme:"The LEGO Movie 2",year:2019,sets:["70838-1"],img:"",bl:""},
+];
+
+// ════════════════════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════════════════════
+let official         = [];   // editable copy of SEED + user edits
+let customs          = [];   // custom figures
+let col              = {};   // collected map {id: true}
+let sectionOverrides = {};   // manual section assignments
+let pages            = {batman:1, brucew:1, other:1, villain:1};
+const PER            = 48;
+
+function loadState(){
+  try{
+    const s = JSON.parse(localStorage.getItem('battrk3')||'{}');
+    col              = s.col              || {};
+    customs          = Array.isArray(s.customs) ? s.customs : [];
+    sectionOverrides = s.sectionOverrides || {};
+    const edits = s.edits || {};
+    official = SEED.map(m => edits[m.id] ? {...m,...edits[m.id]} : {...m});
+    (s.additions||[]).forEach(a=>{ if(!official.find(m=>m.id===a.id)) official.push(a); });
+  }catch(e){
+    console.warn('loadState error:', e);
+    official = SEED.map(m=>({...m}));
+    customs = []; col = {}; sectionOverrides = {};
+  }
+}
+
+function saveState(){
+  // Store only diffs from SEED to keep storage small
+  const edits={}, additions=[];
+  official.forEach(m=>{
+    const seed=SEED.find(s=>s.id===m.id);
+    if(!seed){ additions.push(m); return; }
+    const diff={};
+    ['name','theme','year','sets','img','bl'].forEach(k=>{
+      const mv=Array.isArray(m[k])?m[k].join(','):(m[k]||'');
+      const sv=Array.isArray(seed[k])?seed[k].join(','):(seed[k]||'');
+      if(mv!==sv) diff[k]=m[k];
+    });
+    if(Object.keys(diff).length) edits[m.id]=diff;
+  });
+  try{ localStorage.setItem('battrk3',JSON.stringify({col,customs,edits,additions,sectionOverrides})); }catch(e){}
+}
+
+// ════════════════════════════════════════════════════════════════
+// HELPERS
+// ════════════════════════════════════════════════════════════════
+function imgUrl(id,custom){ return custom?'':(`https://img.bricklink.com/ItemImage/MN/0/${id}.png`); }
+function blUrl(id){ return `https://www.bricklink.com/v2/catalog/catalogitem.page?M=${id}`; }
+const batPH = `<svg width="32" height="22" viewBox="0 0 60 40"><path d="M30 8C20 8 10 2 0 5c5 5 8 9 8 13-3 0-6 2-8 6 6-2 10-2 14 0 2 4 6 8 16 8s14-4 16-8c4-2 8-2 14 0-2-4-5-6-8-6 0-4 3-8 8-13C50 2 40 8 30 8z" fill="#3a3a50"/></svg>`;
+
+
+// ════════════════════════════════════════════════════════════════
+// VILLAIN DETECTION
+// ════════════════════════════════════════════════════════════════
+const VILLAIN_NAMES = [
+  'joker','penguin','riddler','two-face','catwoman','mr. freeze','mr freeze',
+  'scarecrow','poison ivy','bane',"ra's al ghul",'talia al ghul','clayface',
+  'harley quinn','killer croc','man-bat','mad hatter','black mask',
+  'ventriloquist','scarface','hugo strange','professor strange','deadshot',
+  'mr. zsasz','zsasz','court of owls','hush','firefly','killer moth',
+  'solomon grundy','calendar man','maxie zeus','catman','anarky','ratcatcher',
+  'lady shiva','david cain','black spider','bronze tiger','wrath',
+  'gentleman ghost','kgbeast','nkvd','copperhead','cluemaster',
+  'cornelius stirk','abattoir','amygdala','king snake','flamingo',
+  'trigger twin','gunhawk','gunbunny','red hood','lord death man',
+  'atom-master','doctor double x','terrible trio','signalman',
+  'zodiac master','ten eyed man','crazy quilt','eraser','electrocutioner',
+  'spellbinder','humpty dumpty','white rabbit','tweedle','kite man',
+  'zebra man','polkadot man','nocturna','night-slayer','nimrod','chancer',
+  'cavalier','tiger shark','great white shark','firebug','lightning bug',
+  'manakin','magpie','mime','lock-up','film freak','mr. camera','mr camera',
+  'mr. kadaver','penny plunderer','corrosive man','doctor phosphorous',
+  'mr. toxic','mad monk','doctor death','deacon blackfire','dr. hurt',
+  'black glove','condiment king','doctor tzin-tzin','professor pyg',
+  'cirque du strange','crime doctor','broker','dollmaker','sportsmaster',
+  'werewolf','tiger moth','silken spider','dragon fly','orca','march harriet',
+  'king tut','calculator','clock king','nurse harley','vacation joker',
+  'excalibur batman','disco batman','tears of batman',
+];
+
+function isVillain(m){
+  const n = (m.name||'').toLowerCase();
+  return VILLAIN_NAMES.some(v => n.includes(v));
+}
+
+function getSection(m){
+  if(sectionOverrides[m.id]) return sectionOverrides[m.id];
+  const n = (m.name||'').toLowerCase();
+  if(isVillain(m)) return 'villain';
+  if(n.includes('bruce wayne')) return 'brucew';
+  const batmanWords = ['batman','batwing'];
+  if(batmanWords.some(w => n.includes(w))) return 'batman';
+  return 'other';
+}
+
+function allItems(){ return [...official,...customs.map(c=>({...c,_custom:true}))]; }
+
+function previewImg(inputId,prevId){
+  const url=document.getElementById(inputId).value.trim();
+  const prev=document.getElementById(prevId);
+  if(url){ prev.innerHTML=`<img src="${url}" onerror="this.parentElement.innerHTML='${batPH.replace(/"/g,"'")}'" style="max-width:100%;max-height:100%;object-fit:contain;"/>`; }
+  else{ prev.innerHTML=batPH; }
+}
+
+// ════════════════════════════════════════════════════════════════
+// THEME FILTER
+// ════════════════════════════════════════════════════════════════
+function rebuildThemeFilter(){
+  const source = activeTab==='off' ? official : customs.map(c=>({...c,_custom:true}));
+  const themes=[...new Set(source.map(m=>m.theme))].sort();
+  const sel=document.getElementById('ft');
+  const cur=sel.value;
+  sel.innerHTML='<option value="all">All themes</option>';
+  themes.forEach(t=>{const o=document.createElement('option');o.value=t;o.textContent=t;sel.appendChild(o);});
+  if(themes.includes(cur)) sel.value=cur;
+}
+
+// ════════════════════════════════════════════════════════════════
+// TAB SWITCHING
+// ════════════════════════════════════════════════════════════════
+let activeTab = 'off'; // 'off' | 'cust'
+
+function switchTab(tab){
+  activeTab = tab;
+  document.getElementById('section-off').style.display  = tab==='off'  ? '' : 'none';
+  document.getElementById('section-cust').style.display = tab==='cust' ? '' : 'none';
+  const tOff  = document.getElementById('tab-off');
+  const tCust = document.getElementById('tab-cust');
+  tOff.className  = 'tab' + (tab==='off'  ? ' active-off'  : '');
+  tCust.className = 'tab' + (tab==='cust' ? ' active-cust' : '');
+  // Rebuild theme filter for the active tab only
+  rebuildThemeFilter();
+  render();
+}
+
+// ════════════════════════════════════════════════════════════════
+// RENDER
+// ════════════════════════════════════════════════════════════════
+function render(){
+  const q  = document.getElementById('q').value.toLowerCase();
+  const fs = document.getElementById('fs').value;
+  const ft = document.getElementById('ft').value;
+  const so = document.getElementById('so').value;
+
+  function filterItems(items){
+    return items.filter(m=>{
+      if(q && !m.name.toLowerCase().includes(q) && !m.id.toLowerCase().includes(q) && !(m.theme||'').toLowerCase().includes(q) && !(m.maker||'').toLowerCase().includes(q)) return false;
+      const g=!!col[m.id];
+      if(fs==='got'&&!g) return false;
+      if(fs==='not'&&!g===false) return false; // not collected
+      if(fs==='not'&&g) return false;
+      if(ft!=='all'&&m.theme!==ft) return false;
+      return true;
+    });
+  }
+
+  function sortItems(items){
+    return [...items].sort((a,b)=>{
+      if(so==='yr') return (a.year||0)-(b.year||0);
+      if(so==='yd') return (b.year||0)-(a.year||0);
+      if(so==='na') return (a.name||'').localeCompare(b.name||'');
+      if(so==='th') return (a.theme||'').localeCompare(b.theme||'')||((a.year||0)-(b.year||0));
+      return 0;
+    });
+  }
+
+  const filtOff  = filterItems(official);
+  const filtCust = filterItems(customs.map(c=>({...c,_custom:true})));
+
+  // Progress (all items)
+  const all=allItems();
+  const got=all.filter(m=>col[m.id]).length;
+  const total=all.length;
+  const pct=total?Math.round(got/total*100):0;
+  document.getElementById('pc').textContent=`${got} / ${total} collected`;
+  document.getElementById('pp').textContent=`${pct}%`;
+  document.getElementById('pf').style.width=pct+'%';
+
+  // Split items into 3 buckets using getSection()
+  function splitSections(items){
+    return {
+      batman : items.filter(m => getSection(m)==='batman'),
+      brucew : items.filter(m => getSection(m)==='brucew'),
+      other  : items.filter(m => getSection(m)==='other'),
+      villain: items.filter(m => getSection(m)==='villain'),
+    };
+  }
+
+  // Render one paginated grid (official) or unpaginated (custom)
+  function renderGrid(items, gridId, pgcId, isCustom, pageKey){
+    const grid = document.getElementById(gridId);
+    if(!isCustom){
+      const pg  = pages[pageKey]||1;
+      const tp  = Math.max(1, Math.ceil(items.length/PER));
+      if(pg>tp) pages[pageKey]=1;
+      const p   = pages[pageKey]||1;
+      const sl  = items.slice((p-1)*PER, p*PER);
+      grid.innerHTML = sl.length ? sl.map((m,i)=>cardHTML(m,i,false)).join('') : '<div class="empty">Nothing here yet.</div>';
+      const pgcEl = document.getElementById(pgcId);
+      if(pgcEl) pgcEl.innerHTML = tp>1 ? `<button class="btn" onclick="changePage('${pageKey}',-1)" ${p===1?'disabled':''}>← Prev</button><span>Page ${p} of ${tp}</span><button class="btn" onclick="changePage('${pageKey}',1)" ${p===tp?'disabled':''}>Next →</button>` : '';
+    } else {
+      grid.innerHTML = items.length ? items.map((m,i)=>cardHTML(m,i,true)).join('') : '<div class="empty">Nothing here yet.</div>';
+    }
+  }
+
+  // Show/hide a subsection header+grid
+  function showSubsec(hdrId, count, label, cntId){
+    const hdr = document.getElementById(hdrId);
+    const cnt = document.getElementById(cntId);
+    hdr.style.display = '';
+    cnt.textContent   = `${count} ${label}`;
+  }
+
+  if(activeTab==='off'){
+    const shown = filtOff.length;
+    document.getElementById('rc').textContent        = `${shown} result${shown!==1?'s':''}`;
+    document.getElementById('off-count').textContent = `${shown} of ${official.length} shown`;
+    const {batman, brucew, other, villain} = splitSections(sortItems(filtOff));
+    renderGrid(batman,  'grid-batman',   'pgc-batman',   false, 'batman');
+    renderGrid(brucew,  'grid-brucew',    'pgc-brucew',    false, 'brucew');
+    renderGrid(other,   'grid-other',    'pgc-other',    false, 'other');
+    renderGrid(villain, 'grid-villains', 'pgc-villains', false, 'villain');
+    showSubsec('off-batman-hdr',  batman.length,  'figures',  'off-batman-count');
+    showSubsec('off-brucew-hdr',   brucew.length,  'figures', 'off-brucew-count');
+    showSubsec('off-other-hdr',   other.length,   'figures',  'off-other-count');
+    showSubsec('off-villains-hdr',villain.length, 'villains', 'off-villains-count');
+    const offHdrs   = ['off-batman-hdr','off-brucew-hdr','off-other-hdr','off-villains-hdr'];
+    const offGrids  = ['grid-batman','grid-brucew','grid-other','grid-villains'];
+    const offCounts = [batman.length, brucew.length, other.length, villain.length];
+    offHdrs.forEach((id,i)=>{ document.getElementById(id).style.display = offCounts[i]===0 ? 'none':''; });
+    offGrids.forEach((id,i)=>{ if(offCounts[i]===0) document.getElementById(id).innerHTML=''; });
+  } else {
+    const shown = filtCust.length;
+    document.getElementById('rc').textContent         = `${shown} result${shown!==1?'s':''}`;
+    document.getElementById('cust-count').textContent = `${shown} of ${customs.length} figures`;
+    if(customs.length===0){
+      ['cust-grid-batman','cust-grid-other','cust-grid-villains'].forEach(id=>{ document.getElementById(id).innerHTML=''; });
+      document.getElementById('cust-grid-batman').innerHTML='<div class="empty" style="grid-column:1/-1;padding:2rem">No custom figures yet — click <strong style="color:var(--purple)">+ Add Figure</strong> or import a file.</div>';
+      ['cust-batman-hdr','cust-other-hdr','cust-villains-hdr'].forEach(id=>{ document.getElementById(id).style.display='none'; });
+    } else {
+      const {batman, brucew, other, villain} = splitSections(sortItems(filtCust));
+      renderGrid(batman,  'cust-grid-batman',   '', true, '');
+      renderGrid(brucew,  'cust-grid-brucew',    '', true, '');
+      renderGrid(other,   'cust-grid-other',    '', true, '');
+      renderGrid(villain, 'cust-grid-villains', '', true, '');
+      showSubsec('cust-batman-hdr',  batman.length,  'figures',  'cust-batman-count');
+      showSubsec('cust-brucew-hdr',   brucew.length,  'figures', 'cust-brucew-count');
+      showSubsec('cust-other-hdr',   other.length,   'figures',  'cust-other-count');
+      showSubsec('cust-villains-hdr',villain.length, 'villains', 'cust-villains-count');
+      const custHdrs   = ['cust-batman-hdr','cust-brucew-hdr','cust-other-hdr','cust-villains-hdr'];
+      const custGrids  = ['cust-grid-batman','cust-grid-brucew','cust-grid-other','cust-grid-villains'];
+      const custCounts = [batman.length, brucew.length, other.length, villain.length];
+      custHdrs.forEach((id,i)=>{ document.getElementById(id).style.display = custCounts[i]===0 ? 'none':''; });
+      custGrids.forEach((id,i)=>{ if(custCounts[i]===0) document.getElementById(id).innerHTML=''; });
+    }
+  }
+}
+
+function changePage(key,d){
+  pages[key]=Math.max(1,(pages[key]||1)+d);
+  render();
+  const gridMap={batman:'grid-batman',brucew:'grid-brucew',other:'grid-other',villain:'grid-villains'};
+  const el=document.getElementById(gridMap[key]||'grid-batman');
+  if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function cardHTML(m,i,isCustom){
+  const g=!!col[m.id];
+  const sets=(m.sets||[]).slice(0,5).map(s=>`<span class="sp">${s}</span>`).join('');
+  const imgSrc=m.img||(isCustom?'':imgUrl(m.id));
+  const imgTag=imgSrc
+    ?`<img class="ci" src="${imgSrc}" alt="${m.name}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>`
+    :'';
+  const ph=`<div class="iph" ${imgSrc?'':'style="display:flex"'}>${batPH}</div>`;
+  const bl=m.bl||(isCustom?(m.link||''):(blUrl(m.id)));
+  const blLabel=isCustom?'Source ↗':'BrickLink ↗';
+  const editBtn=`<button class="ca-btn" onclick="event.stopPropagation();${isCustom?`openEditCustom(${customs.findIndex(c=>c.id===m.id)})`:`openEdit(${official.findIndex(x=>x.id===m.id)})`}">✎ Edit</button>`;
+  const subtitle=isCustom?(m.maker?`<div class="cth">${m.maker}</div>`:''):`<div class="cth">${m.theme}</div>`;
+  const noteEl=isCustom&&m.notes?`<div class="cth" style="margin-top:2px;font-size:9px;opacity:.7;line-height:1.4">${m.notes.slice(0,60)}${m.notes.length>60?'…':''}</div>`:'';
+
+  return `<div class="card${g?' got':''}${isCustom?' custom':''}" id="c-${m.id}" style="animation-delay:${Math.min(i*.025,.5)}s">
+<div class="ciw" onclick="tog('${m.id}')">
+  ${imgTag}${ph}
+  <div class="gb">✓ Got it</div>
+  ${isCustom?'<div class="custom-badge">Custom</div>':''}
+  <div class="card-actions">${editBtn}</div>
+</div>
+<div class="cb">
+  <div class="cid">${m.id}</div>
+  <div class="cn" onclick="tog('${m.id}')">${m.name}</div>
+  ${subtitle}
+  ${isCustom?'':(`<div class="cth" style="font-size:9px;opacity:.6">${m.theme}</div>`)}
+  <div class="cyr">${m.year||'—'}</div>
+  ${isCustom?noteEl:`<div class="cs">${sets||'<span class="sp" style="opacity:.4">—</span>'}</div>`}
+  <div class="cf">
+    ${bl?`<a class="blb" href="${bl}" target="_blank" onclick="event.stopPropagation()">${blLabel}</a>`:`<span class="blb none">${blLabel}</span>`}
+    <button class="tg" onclick="tog('${m.id}')" title="${g?'Unmark':'Mark collected'}">
+      ${g?`<svg viewBox="0 0 12 12" fill="none"><path d="M1.5 6l3 3 6-6" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+         :`<svg viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4.5" stroke="#6b6b80" stroke-width="1.5"/></svg>`}
+    </button>
+  </div>
+</div>
+</div>`;
+}
+
+// ════════════════════════════════════════════════════════════════
+// TOGGLE COLLECTED
+// ════════════════════════════════════════════════════════════════
+function tog(id){
+  col[id]=!col[id];
+  saveState();
+  const card=document.getElementById('c-'+id);
+  if(!card) return;
+  const g=!!col[id];
+  card.classList.toggle('got',g);
+  card.querySelector('.gb').style.opacity=g?'1':'0';
+  const cn=card.querySelector('.cn'); if(cn) cn.style.color=g?'var(--green)':'';
+  card.querySelector('.tg').innerHTML=g
+    ?`<svg viewBox="0 0 12 12" fill="none"><path d="M1.5 6l3 3 6-6" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+    :`<svg viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4.5" stroke="#6b6b80" stroke-width="1.5"/></svg>`;
+  const all=allItems(), n=all.filter(m=>col[m.id]).length, t=all.length, p=Math.round(n/t*100);
+  document.getElementById('pc').textContent=`${n} / ${t} collected`;
+  document.getElementById('pp').textContent=`${p}%`;
+  document.getElementById('pf').style.width=p+'%';
+  setStatus(g?`✓ ${id} marked as collected`:`${id} unmarked`);
+}
+
+// ════════════════════════════════════════════════════════════════
+// EDIT OFFICIAL MODAL
+// ════════════════════════════════════════════════════════════════
+function openAddOfficial(){
+  ['addoff-id','addoff-name','addoff-theme','addoff-year','addoff-sets','addoff-img','addoff-bl'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('addoff-section').value='';
+  document.getElementById('addoff-img-prev').innerHTML=batPH;
+  document.getElementById('add-off-overlay').classList.add('open');
+}
+
+function saveAddOfficial(){
+  const name = document.getElementById('addoff-name').value.trim() || 'Unnamed Figure';
+  let id = document.getElementById('addoff-id').value.trim();
+  if(!id){
+    const slug = name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,24);
+    id = 'off-' + slug + '-' + Date.now().toString(36).slice(-4);
+  }
+  // Deduplicate ID
+  const idTaken = testId => official.find(m=>m.id===testId) || customs.find(c=>c.id===testId);
+  if(idTaken(id)) id = id + '-' + Date.now().toString(36).slice(-4);
+
+  const fig = {
+    id, name,
+    theme : document.getElementById('addoff-theme').value.trim() || 'Super Heroes',
+    year  : +document.getElementById('addoff-year').value || new Date().getFullYear(),
+    sets  : document.getElementById('addoff-sets').value.split(',').map(s=>s.trim()).filter(Boolean),
+    img   : document.getElementById('addoff-img').value.trim() || '',
+    bl    : document.getElementById('addoff-bl').value.trim() || '',
+  };
+  const secVal = document.getElementById('addoff-section').value;
+  if(secVal) sectionOverrides[id] = secVal;
+
+  official.push(fig);
+  saveState(); rebuildThemeFilter(); render();
+  closeAddOffModal();
+  setStatus(`Official figure "${name}" added`);
+}
+
+function closeAddOff(e){ if(e.target===document.getElementById('add-off-overlay')) closeAddOffModal(); }
+function closeAddOffModal(){ document.getElementById('add-off-overlay').classList.remove('open'); }
+
+function openEdit(idx){
+  const m=official[idx];
+  document.getElementById('edit-idx').value=idx;
+  document.getElementById('edit-title').textContent='Edit: '+m.name.slice(0,30);
+  document.getElementById('edit-id').value=m.id;
+  document.getElementById('edit-name').value=m.name;
+  document.getElementById('edit-theme').value=m.theme;
+  document.getElementById('edit-year').value=m.year;
+  document.getElementById('edit-sets').value=(m.sets||[]).join(', ');
+  document.getElementById('edit-img').value=m.img||'';
+  document.getElementById('edit-bl').value=m.bl||'';
+  const prev=document.getElementById('edit-img-prev');
+  prev.innerHTML=m.img?`<img src="${m.img}" style="max-width:100%;max-height:100%;object-fit:contain"/>`:batPH;
+  document.getElementById('edit-section').value = sectionOverrides[m.id]||'';
+  document.getElementById('edit-del-btn').style.display='inline-flex';
+  document.getElementById('edit-overlay').classList.add('open');
+}
+
+function saveEdit(){
+  const idx=+document.getElementById('edit-idx').value;
+  const m=official[idx];
+  m.name  = document.getElementById('edit-name').value.trim()||m.name;
+  m.theme = document.getElementById('edit-theme').value.trim()||m.theme;
+  m.year  = +document.getElementById('edit-year').value||m.year;
+  m.sets  = document.getElementById('edit-sets').value.split(',').map(s=>s.trim()).filter(Boolean);
+  m.img   = document.getElementById('edit-img').value.trim();
+  m.bl    = document.getElementById('edit-bl').value.trim();
+  const secVal = document.getElementById('edit-section').value;
+  if(secVal){ sectionOverrides[m.id]=secVal; } else { delete sectionOverrides[m.id]; }
+  // ID change — handle collection key migration
+  const newId=document.getElementById('edit-id').value.trim();
+  if(newId && newId!==m.id){
+    if(col[m.id]){ col[newId]=true; delete col[m.id]; }
+    m.id=newId;
+  }
+  saveState(); rebuildThemeFilter(); render();
+  closeEditModal();
+  setStatus('Changes saved!');
+}
+
+function deleteOfficial(){
+  if(!confirm('Remove this entry from the tracker? (Cannot be undone)')) return;
+  const idx=+document.getElementById('edit-idx').value;
+  const id=official[idx].id;
+  official.splice(idx,1);
+  delete col[id];
+  delete sectionOverrides[id];
+  saveState(); rebuildThemeFilter(); render(); closeEditModal();
+  setStatus(`${id} removed`);
+}
+
+function closeEdit(e){ if(e.target===document.getElementById('edit-overlay')) closeEditModal(); }
+function closeEditModal(){ document.getElementById('edit-overlay').classList.remove('open'); }
+
+// ════════════════════════════════════════════════════════════════
+// FETCH FROM URL — client-side metadata extraction via CORS proxy
+// No API key required. Works from any browser including file://
+// ════════════════════════════════════════════════════════════════
+async function fetchFromUrl(){
+  const url = document.getElementById('fetch-url').value.trim();
+  if(!url){ setFetchStatus('⚠ Paste a URL first', 'warn'); return; }
+
+  const btn = document.getElementById('fetch-btn');
+  btn.disabled = true;
+  btn.textContent = '...';
+  setFetchStatus('Fetching page...', 'loading');
+
+  try{
+    // Use allorigins.win as a CORS proxy — returns { contents: "<html>..." }
+    const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(url);
+    const resp = await fetch(proxyUrl);
+    if(!resp.ok) throw new Error('Proxy returned ' + resp.status);
+    const json = await resp.json();
+    const html = json.contents;
+    if(!html) throw new Error('Empty page returned');
+
+    // Parse the HTML string into a DOM tree
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+
+    // Helper: get meta content by property or name attribute
+    const meta = (attr, val) => {
+      const el = doc.querySelector(`meta[${attr}="${val}"]`);
+      return el ? (el.getAttribute('content') || '').trim() : '';
+    };
+    const first = (...vals) => vals.find(v => v && v.length > 0) || '';
+
+    // ── Name ──────────────────────────────────────────────────────
+    const name = first(
+      meta('property','og:title'),
+      meta('name','twitter:title'),
+      meta('property','product:title'),
+      (doc.querySelector('h1') || {}).textContent || '',
+      doc.title || ''
+    ).replace(/\s+/g,' ').trim();
+
+    // ── Description / Notes ───────────────────────────────────────
+    const notes = first(
+      meta('property','og:description'),
+      meta('name','description'),
+      meta('name','twitter:description')
+    ).slice(0, 200).trim();
+
+    // ── Image ─────────────────────────────────────────────────────
+    let image = first(
+      meta('property','og:image'),
+      meta('name','twitter:image'),
+      meta('property','og:image:secure_url'),
+      meta('itemprop','image')
+    );
+    // Try schema.org JSON-LD
+    if(!image){
+      const ldScripts = [...doc.querySelectorAll('script[type="application/ld+json"]')];
+      for(const s of ldScripts){
+        try{
+          const ld = JSON.parse(s.textContent);
+          const items = Array.isArray(ld) ? ld : (ld['@graph'] || [ld]);
+          for(const item of items){
+            const img = item.image || item.thumbnailUrl;
+            if(img){ image = typeof img === 'string' ? img : (img.url || img[0] || ''); break; }
+          }
+        }catch(e){}
+        if(image) break;
+      }
+    }
+    // Make relative image URLs absolute
+    if(image && image.startsWith('/')){
+      try{ const u = new URL(url); image = u.origin + image; }catch(e){}
+    }
+
+    // ── Maker / Brand ─────────────────────────────────────────────
+    let maker = first(
+      meta('property','og:site_name'),
+      meta('name','author'),
+      meta('property','product:brand'),
+      meta('name','application-name')
+    );
+    // Try schema.org for brand
+    if(!maker){
+      const ldScripts = [...doc.querySelectorAll('script[type="application/ld+json"]')];
+      for(const s of ldScripts){
+        try{
+          const ld = JSON.parse(s.textContent);
+          const items = Array.isArray(ld) ? ld : (ld['@graph'] || [ld]);
+          for(const item of items){
+            const b = item.brand || item.manufacturer || item.author;
+            if(b){ maker = typeof b==='string' ? b : (b.name || ''); break; }
+          }
+        }catch(e){}
+        if(maker) break;
+      }
+    }
+
+    // ── Year ──────────────────────────────────────────────────────
+    let year = null;
+    const dateStr = first(
+      meta('property','article:published_time'),
+      meta('name','date'),
+      meta('property','og:updated_time'),
+      meta('property','product:availability') // sometimes a date
+    );
+    if(dateStr){ const m = dateStr.match(/(20\d{2}|19\d{2})/); if(m) year = +m[1]; }
+    // Also scan page text for a 4-digit year near keywords
+    if(!year){
+      const bodyText = doc.body ? doc.body.textContent : '';
+      const m = bodyText.match(/(20\d{2}|19\d{2})/);
+      if(m) year = +m[1];
+    }
+
+    // ── ID: derive from URL slug or SKU ───────────────────────────
+    let id = '';
+    // Try schema.org sku/productID
+    const ldScripts2 = [...doc.querySelectorAll('script[type="application/ld+json"]')];
+    for(const s of ldScripts2){
+      try{
+        const ld = JSON.parse(s.textContent);
+        const items = Array.isArray(ld) ? ld : (ld['@graph'] || [ld]);
+        for(const item of items){
+          const sku = item.sku || item.productID || item.mpn;
+          if(sku){ id = String(sku).toLowerCase().replace(/[^a-z0-9]+/g,'-').slice(0,30); break; }
+        }
+      }catch(e){}
+      if(id) break;
+    }
+    // Fallback: last meaningful URL path segment
+    if(!id){
+      try{
+        const u = new URL(url);
+        const parts = u.pathname.split('/').filter(p => p && p.length > 1 && !/^(page|product|item|shop|catalog)$/i.test(p));
+        if(parts.length) id = 'custom-' + parts[parts.length-1].toLowerCase().replace(/[^a-z0-9]+/g,'-').slice(0,24);
+      }catch(e){}
+    }
+
+    // ── Theme: try to infer from URL or og:type ───────────────────
+    const theme = first(
+      meta('property','og:type') === 'product' ? 'Custom' : '',
+      ''
+    ) || 'Custom';
+
+    // ── Populate form fields ──────────────────────────────────────
+    const set = (elId, val) => { if(val) document.getElementById(elId).value = val; };
+    set('cust-id',    id);
+    set('cust-name',  name);
+    set('cust-maker', maker);
+    set('cust-theme', theme);
+    if(year) document.getElementById('cust-year').value = year;
+    set('cust-notes', notes);
+    set('cust-link',  url);
+    if(image){
+      document.getElementById('cust-img').value = image;
+      previewImg('cust-img','cust-img-prev');
+    }
+
+    const filled = [name,maker,image,notes].filter(Boolean).length;
+    if(filled === 0){
+      setFetchStatus('⚠ Page loaded but no metadata found — fill fields manually', 'warn');
+    } else {
+      setFetchStatus(`✓ Extracted ${filled} field${filled!==1?'s':''} — check and adjust as needed`, 'ok');
+    }
+  }catch(err){
+    console.error('fetchFromUrl:', err);
+    setFetchStatus('⚠ Could not fetch: ' + err.message + ' — try filling fields manually', 'warn');
+  }finally{
+    btn.disabled = false;
+    btn.textContent = 'Fetch';
+  }
+}
+
+function setFetchStatus(msg, type){
+  const el = document.getElementById('fetch-status');
+  el.textContent = msg;
+  el.style.color = type==='ok' ? 'var(--green)' : type==='warn' ? '#f87171' : 'var(--muted)';
+}
+
+// ════════════════════════════════════════════════════════════════
+// ADD / EDIT CUSTOM MODAL
+// ════════════════════════════════════════════════════════════════
+function openAddCustom(){
+  document.getElementById('cust-idx').value='';
+  document.getElementById('cust-modal-title').textContent='Add Custom Figure';
+  ['cust-id','cust-name','cust-maker','cust-theme','cust-year','cust-notes','cust-img','cust-link','fetch-url','cust-section'].forEach(id=>document.getElementById(id).value='');
+  setFetchStatus('','');
+  document.getElementById('cust-img-prev').innerHTML=batPH;
+  document.getElementById('cust-del-btn').style.display='none';
+  document.getElementById('cust-overlay').classList.add('open');
+}
+
+function openEditCustom(idx){
+  const c=customs[idx];
+  document.getElementById('cust-idx').value=idx;
+  document.getElementById('cust-modal-title').textContent='Edit Custom Figure';
+  document.getElementById('cust-id').value=c.id||'';
+  document.getElementById('cust-name').value=c.name||'';
+  document.getElementById('cust-maker').value=c.maker||'';
+  document.getElementById('cust-theme').value=c.theme||'Custom';
+  document.getElementById('cust-year').value=c.year||'';
+  document.getElementById('cust-notes').value=c.notes||'';
+  document.getElementById('cust-img').value=c.img||'';
+  document.getElementById('cust-link').value=c.link||'';
+  document.getElementById('cust-section').value=sectionOverrides[c.id]||'';
+  const prev=document.getElementById('cust-img-prev');
+  prev.innerHTML=c.img?`<img src="${c.img}" style="max-width:100%;max-height:100%;object-fit:contain"/>`:batPH;
+  document.getElementById('cust-del-btn').style.display='inline-flex';
+  document.getElementById('fetch-url').value='';
+  setFetchStatus('','');
+  document.getElementById('cust-overlay').classList.add('open');
+}
+
+function saveCustom(){
+  const idxStr = document.getElementById('cust-idx').value;
+  const isEdit = idxStr !== '';
+
+  // Name falls back gracefully
+  const name = document.getElementById('cust-name').value.trim() || 'Unnamed Figure';
+
+  // Auto-generate ID if blank
+  let id = document.getElementById('cust-id').value.trim();
+  if(!id){
+    const slug = name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,24);
+    id = 'custom-' + slug + '-' + Date.now().toString(36).slice(-4);
+    document.getElementById('cust-id').value = id;
+  }
+
+  // If ID already taken by a different entry, append suffix
+  const idTaken = testId => (customs.find((c,i)=>c.id===testId&&(!isEdit||i!==+idxStr))) || official.find(m=>m.id===testId);
+  if(idTaken(id)){
+    id = id + '-' + Date.now().toString(36).slice(-4);
+    document.getElementById('cust-id').value = id;
+  }
+
+  // Year: keep blank if not entered
+  const yearRaw = document.getElementById('cust-year').value.trim();
+  const year = yearRaw ? (+yearRaw || null) : null;
+
+  const fig = {
+    id, name,
+    maker  : document.getElementById('cust-maker').value.trim() || '',
+    theme  : document.getElementById('cust-theme').value.trim() || 'Custom',
+    year,
+    notes  : document.getElementById('cust-notes').value.trim() || '',
+    img    : document.getElementById('cust-img').value.trim()   || '',
+    link   : document.getElementById('cust-link').value.trim()  || '',
+    _custom: true,
+  };
+
+  const custSecVal = document.getElementById('cust-section').value;
+  if(custSecVal){ sectionOverrides[id]=custSecVal; } else { delete sectionOverrides[id]; }
+  if(isEdit){
+    customs[+idxStr] = fig;
+  } else {
+    customs.push(fig);
+  }
+  saveState(); rebuildThemeFilter(); render(); closeCustomModal();
+  setStatus('Custom figure "' + name + '" saved');
+}
+
+function deleteCustom(){
+  if(!confirm('Delete this custom figure?')) return;
+  const idx=+document.getElementById('cust-idx').value;
+  const id=customs[idx].id;
+  customs.splice(idx,1);
+  delete col[id];
+  saveState(); rebuildThemeFilter(); render(); closeCustomModal();
+  setStatus(`Custom figure ${id} deleted`);
+}
+
+function closeCustom(e){ if(e.target===document.getElementById('cust-overlay')) closeCustomModal(); }
+function closeCustomModal(){ document.getElementById('cust-overlay').classList.remove('open'); }
+
+// ════════════════════════════════════════════════════════════════
+// CUSTOM IMPORT (JSON or CSV)
+// ════════════════════════════════════════════════════════════════
+function openCustomImport(){ document.getElementById('imp-overlay').classList.add('open'); }
+function closeImpModal(e){
+  if(!e||e.target===document.getElementById('imp-overlay'))
+    document.getElementById('imp-overlay').classList.remove('open');
+}
+
+function handleDrop(e){
+  e.preventDefault();
+  document.getElementById('drop-zone').classList.remove('drag');
+  const file=e.dataTransfer.files[0];
+  if(file) processCustomFile(file);
+}
+
+function handleCustomFile(e){
+  const file=e.target.files[0];
+  if(file) processCustomFile(file);
+  e.target.value='';
+}
+
+function processCustomFile(file){
+  const r=new FileReader();
+  r.onload=ev=>{
+    try{
+      let figs=[];
+      if(file.name.endsWith('.csv')){
+        figs=parseCSV(ev.target.result);
+      } else {
+        const d=JSON.parse(ev.target.result);
+        figs=Array.isArray(d)?d:(d.customs||d.figures||[]);
+      }
+      if(!figs.length){ alert('No figures found in file.'); return; }
+      let added=0,updated=0;
+      figs.forEach(f=>{
+        if(!f.id||!f.name) return;
+        f.theme=f.theme||'Custom';
+        f._custom=true;
+        const ei=customs.findIndex(c=>c.id===f.id);
+        if(ei>=0){ customs[ei]={...customs[ei],...f}; updated++; }
+        else { customs.push(f); added++; }
+      });
+      saveState(); rebuildThemeFilter(); render();
+      closeImpModal();
+      setStatus(`Imported ${added} new, ${updated} updated custom figures`);
+    }catch(err){ alert('Could not parse file: '+err.message); }
+  };
+  r.readAsText(file);
+}
+
+function parseCSV(text){
+  const lines=text.trim().split('\n');
+  const headers=lines[0].split(',').map(h=>h.trim().replace(/^"|"$/g,''));
+  return lines.slice(1).map(line=>{
+    const vals=line.match(/(".*?"|[^,]+|(?<=,)(?=,)|^(?=,)|(?<=,)$)/g)||[];
+    const obj={};
+    headers.forEach((h,i)=>{ obj[h]=(vals[i]||'').trim().replace(/^"|"$/g,''); });
+    if(obj.year) obj.year=+obj.year;
+    return obj;
+  }).filter(o=>o.id&&o.name);
+}
+
+// ════════════════════════════════════════════════════════════════
+// EXPORT / IMPORT FULL COLLECTION
+// ════════════════════════════════════════════════════════════════
+function exportData(){
+  const edits={},additions=[];
+  official.forEach(m=>{
+    const seed=SEED.find(s=>s.id===m.id);
+    if(!seed){additions.push(m);return;}
+    const diff={};
+    ['name','theme','year','sets','img','bl'].forEach(k=>{
+      const mv=Array.isArray(m[k])?m[k].join(','):(m[k]||'');
+      const sv=Array.isArray(seed[k])?seed[k].join(','):(seed[k]||'');
+      if(mv!==sv) diff[k]=m[k];
+    });
+    if(Object.keys(diff).length) edits[m.id]=diff;
+  });
+  const blob=new Blob([JSON.stringify({v:3,exported:new Date().toISOString(),col,customs,edits,additions,sectionOverrides},null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='batman-tracker-backup.json';a.click();
+  setStatus('Collection exported!');
+}
+
+function importData(e){
+  const f=e.target.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    try{
+      const d=JSON.parse(ev.target.result);
+      col              = d.col||d.collection||{};
+      customs          = d.customs||[];
+      sectionOverrides = d.sectionOverrides||{};
+      const edits=d.edits||{};
+      official=SEED.map(m=>edits[m.id]?{...m,...edits[m.id]}:{...m});
+      (d.additions||[]).forEach(a=>{if(!official.find(m=>m.id===a.id))official.push(a);});
+      saveState(); rebuildThemeFilter(); render();
+      setStatus('Collection imported!');
+    }catch(err){alert('Invalid file.');}
+  };
+  r.readAsText(f); e.target.value='';
+}
+
+// ════════════════════════════════════════════════════════════════
+// DATA RESET
+// ════════════════════════════════════════════════════════════════
+function confirmReset(){
+  const total = Object.keys(col).length;
+  if(total === 0){
+    setStatus('Nothing to reset — no figures are marked as collected.');
+    return;
+  }
+  const msg = `Reset all ${total} collected figure${total !== 1 ? 's' : ''} back to not collected?\n\nThis will NOT remove any added or edited figures — only the collected status will be cleared.\n\nThis cannot be undone.`;
+  if(!confirm(msg)) return;
+  resetCollection();
+}
+
+function resetCollection(){
+  const count = Object.keys(col).length;
+  col = {};
+  saveState();
+  render();
+  setStatus(`Collection reset — ${count} figure${count !== 1 ? 's' : ''} marked as not collected.`);
+}
+
+function setStatus(msg){ document.getElementById('st').textContent=msg; }
+
+// ════════════════════════════════════════════════════════════════
+// MIGRATION NOTICE
+// ════════════════════════════════════════════════════════════════
+function showMigrateIfNeeded(){
+  // Show if: no saved state at all, AND user hasn't dismissed it before
+  const dismissed = localStorage.getItem('battrk_migrate_dismissed');
+  if(dismissed) return;
+  const saved = localStorage.getItem('battrk3');
+  if(saved){
+    // Has saved state — check if it has any custom figures or collected items
+    try{
+      const d = JSON.parse(saved);
+      const hasData = (d.customs && d.customs.length > 0) ||
+                      (d.col && Object.keys(d.col).length > 0) ||
+                      (d.additions && d.additions.length > 0);
+      if(hasData) return; // Already has data, no need to show
+    }catch(e){}
+  }
+  // No data — show the migration modal after a short delay so the page renders first
+  setTimeout(()=>{ document.getElementById('migrate-overlay').classList.add('open'); }, 600);
+}
+
+function closeMigrate(e){
+  if(e.target === document.getElementById('migrate-overlay')) closeMigrateModal();
+}
+function closeMigrateModal(){
+  document.getElementById('migrate-overlay').classList.remove('open');
+}
+function dismissMigrate(){
+  localStorage.setItem('battrk_migrate_dismissed', '1');
+  closeMigrateModal();
+}
+
+function migrateImport(e){
+  const f = e.target.files[0]; if(!f) return;
+  const r = new FileReader();
+  r.onload = ev => {
+    try{
+      const d = JSON.parse(ev.target.result);
+      col              = d.col || d.collection || {};
+      customs          = Array.isArray(d.customs) ? d.customs : [];
+      sectionOverrides = d.sectionOverrides || {};
+      const edits = d.edits || {};
+      official = SEED.map(m => edits[m.id] ? {...m,...edits[m.id]} : {...m});
+      (d.additions||[]).forEach(a=>{ if(!official.find(m=>m.id===a.id)) official.push(a); });
+      saveState(); rebuildThemeFilter(); render();
+      closeMigrateModal();
+      setStatus(`Collection restored — ${Object.keys(col).length} collected, ${customs.length} custom figures`);
+    }catch(err){ alert('Could not read backup file. Make sure it is a valid Bat-Tracker JSON export.'); }
+  };
+  r.readAsText(f); e.target.value='';
+}
+
+// ════════════════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════════════════
+loadState();
+rebuildThemeFilter();
+render();
+setStatus(`${official.length} official + ${customs.length} custom figures — click ✎ Edit on any card to correct data`);
+showMigrateIfNeeded();
+</script>
+</body>
+</html>
